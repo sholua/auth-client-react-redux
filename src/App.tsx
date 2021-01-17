@@ -5,7 +5,7 @@ import "./App.css";
 import NavBar from "./components/common/NavBar";
 import Users from "./components/Users";
 import NotFound from "./components/NotFound";
-// import LoginForm from "./components/LoginForm";
+import LoginForm from "./components/LoginForm";
 import Logout from "./components/Logout";
 import RegisterForm from "./components/RegisterForm";
 import auth from "./services/authService";
@@ -29,7 +29,7 @@ function App() {
       <main className="container">
         <Switch>
           <Route path="/register" component={RegisterForm} />
-          {/* <Route path="/login" component={LoginForm} /> */}
+          <Route path="/login" component={LoginForm} />
           <Route path="/logout" component={Logout} />
           <Route path="/users" component={Users} />
           <Route path="/not-found" component={NotFound} />

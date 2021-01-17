@@ -9,11 +9,15 @@ const refreshTokenKey = "refreshToken";
 http.setAccessToken(getAccessToken());
 
 export async function login(email, password) {
-  const { data: accessToken } = await http.post(apiEndpoint, {
+  const response = await http.post(`${apiEndpoint}/login`, {
     email,
     password,
   });
-  localStorage.setItem(accessTokenKey, accessToken);
+
+  loginWithJwt(
+    response.headers["x-access-token"],
+    response.headers["x-refresh-token"]
+  );
 }
 
 export function loginWithJwt(accessToken, refreshToken) {
@@ -23,7 +27,9 @@ export function loginWithJwt(accessToken, refreshToken) {
 
 export async function logout() {
   await http.delete(`${apiEndpoint}/logout`, {
-    refreshToken: localStorage.getItem(refreshTokenKey),
+    data: {
+      refreshToken: localStorage.getItem(refreshTokenKey),
+    },
   });
   localStorage.removeItem(accessTokenKey);
   localStorage.removeItem(refreshTokenKey);
