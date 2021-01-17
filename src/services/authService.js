@@ -21,7 +21,10 @@ export function loginWithJwt(accessToken, refreshToken) {
   localStorage.setItem(refreshTokenKey, refreshToken);
 }
 
-export function logout() {
+export async function logout() {
+  await http.delete(`${apiEndpoint}/logout`, {
+    refreshToken: localStorage.getItem(refreshTokenKey),
+  });
   localStorage.removeItem(accessTokenKey);
   localStorage.removeItem(refreshTokenKey);
 }

@@ -35,7 +35,7 @@ class Form extends Component {
     const obj = { [name]: value };
     const schema = Joi.object({ [name]: this.joiKeys[name] });
     const { error } = schema.validate(obj);
-    return error ? error.details[0].message : null;
+    return error ? [error.details[0].message] : null;
   };
 
   handleSubmit = (event) => {
