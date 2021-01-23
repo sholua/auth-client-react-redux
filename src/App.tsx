@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import NavBar from "./components/common/NavBar";
 import Users from "./components/Users";

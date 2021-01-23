@@ -1,7 +1,25 @@
-import React from "react";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { loadUsers } from "../store/users";
 
-const Users = () => {
-  return <h1>Users</h1>;
-};
+class Users extends Component {
+  componentDidMount() {
+    this.props.loadUsers();
+  }
 
-export default Users;
+  render() {
+    return (
+      <ul>
+        {this.props.users.map((user) => (
+          <li key={user._id}>{user.name}</li>
+        ))}
+      </ul>
+    );
+  }
+}
+
+const mapStateToProps = (state) => ({
+  users: state.entities.users.list,
+});
+
+export default connect(mapStateToProps, { loadUsers })(Users);

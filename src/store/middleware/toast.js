@@ -1,7 +1,8 @@
 import { toast } from "react-toastify";
+import { apiCallFailed } from "../api";
 
 const toaster = (store) => (next) => (action) => {
-  if (action.type === "error") toast.error(action.payload.message);
+  if (action.type === apiCallFailed.type) toast.error(action.payload);
   else return next(action);
 };
 
