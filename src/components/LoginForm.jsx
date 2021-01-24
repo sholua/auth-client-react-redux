@@ -1,7 +1,8 @@
 import React from "react";
 import Joi from "joi";
+import { connect } from "react-redux";
 import Form from "./common/Form";
-import auth from "../services/authService";
+import { login } from "../store/auth";
 
 class LoginForm extends Form {
   state = {
@@ -20,10 +21,10 @@ class LoginForm extends Form {
   doSubmit = async () => {
     try {
       const { data } = this.state;
-      await auth.login(data.username, data.password);
+      await this.props.login(data.username, data.password);
 
-      const { state } = this.props.location;
-      window.location = state ? state.from.pathname : "/";
+      // const { state } = this.props.location;
+      // window.location = state ? state.from.pathname : "/";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors, ...ex.response.data };
@@ -46,4 +47,4 @@ class LoginForm extends Form {
   }
 }
 
-export default LoginForm;
+export default connect(null, { login })(LoginForm);

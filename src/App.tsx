@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import { useSelector } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import NavBar from "./components/common/NavBar";
@@ -9,19 +10,20 @@ import NotFound from "./components/NotFound";
 import LoginForm from "./components/LoginForm";
 import Logout from "./components/Logout";
 import RegisterForm from "./components/RegisterForm";
-import auth from "./services/authService";
 
 interface User {
   name: String;
 }
 
-function App() {
-  const [user, setUser] = useState({});
+interface RootState {
+  entities: [];
+  auth: any;
+}
 
-  useEffect(() => {
-    const user = auth.getCurrentUser() as User;
-    setUser(user);
-  }, []);
+function App() {
+  const user = useSelector(
+    (state: RootState) => state.auth.currentUser
+  ) as User;
 
   return (
     <React.Fragment>
