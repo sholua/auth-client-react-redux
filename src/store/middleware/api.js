@@ -19,7 +19,7 @@ const api = ({ dispatch }) => (next) => async (action) => {
       data,
     });
     // General
-    dispatch(actions.apiCallSuccess(response.data));
+    dispatch(actions.apiCallSuccess({ headers: response.headers }));
     // Specific
     if (onSuccess) dispatch({ type: onSuccess, payload: response.data });
   } catch (ex) {
