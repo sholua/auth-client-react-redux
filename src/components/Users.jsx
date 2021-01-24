@@ -1,25 +1,24 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { loadUsers } from "../store/users";
 
-class Users extends Component {
-  componentDidMount() {
-    this.props.loadUsers();
-  }
+const Users = () => {
+  const dispatch = useDispatch();
+  const users = useSelector((state) => state.entities.users.list);
 
-  render() {
-    return (
-      <ul>
-        {this.props.users.map((user) => (
-          <li key={user._id}>{user.name}</li>
-        ))}
-      </ul>
-    );
-  }
-}
+  useEffect(() => {
+    dispatch(loadUsers());
+  }, [dispatch]);
 
-const mapStateToProps = (state) => ({
-  users: state.entities.users.list,
-});
+  return (
+    <ul>
+      {users.map((user) => (
+        <li key={user._id}>
+          {user.name} - <span>{user.email}</span>
+        </li>
+      ))}
+    </ul>
+  );
+};
 
-export default connect(mapStateToProps, { loadUsers })(Users);
+export default Users;
