@@ -3,6 +3,7 @@ import Joi from "joi";
 import { connect } from "react-redux";
 import Form from "./common/Form";
 import { login } from "../store/auth";
+import { Redirect } from "react-router-dom";
 
 class LoginForm extends Form {
   state = {
@@ -22,9 +23,6 @@ class LoginForm extends Form {
     try {
       const { data } = this.state;
       await this.props.login(data.username, data.password);
-
-      // const { state } = this.props.location;
-      // window.location = state ? state.from.pathname : "/";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors, ...ex.response.data };
@@ -34,6 +32,8 @@ class LoginForm extends Form {
   };
 
   render() {
+    if (this.props.currentUser) return <Redirect to="/users" />;
+
     return (
       <div>
         <h1>Login</h1>
@@ -47,4 +47,8 @@ class LoginForm extends Form {
   }
 }
 
-export default connect(null, { login })(LoginForm);
+const mapStateToProps = (state) => ({
+  currentUser: state.auth.currentUser,
+});
+
+export default connect(mapStateToProps, { login })(LoginForm);
