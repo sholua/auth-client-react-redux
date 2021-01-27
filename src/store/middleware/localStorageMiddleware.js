@@ -1,4 +1,4 @@
-import { apiCallSuccess } from "../api";
+import { apiCallSuccess } from "../apiActions";
 import config from "../../config.json";
 
 const localStorageMiddleware = (store) => (next) => (action) => {

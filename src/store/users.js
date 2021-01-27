@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { apiCallBegan } from "./api";
+import { apiCallBegan } from "./apiActions";
 import moment from "moment";
 
 const slice = createSlice({

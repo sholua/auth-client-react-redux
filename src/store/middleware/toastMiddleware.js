@@ -1,9 +1,9 @@
 import { toast } from "react-toastify";
-import { apiCallFailed } from "../api";
+import { apiCallFailed } from "../apiActions";
 
-const toaster = (store) => (next) => (action) => {
+const toastMiddleware = (store) => (next) => (action) => {
   if (action.type === apiCallFailed.type) toast.error(action.payload);
   else return next(action);
 };
 
-export default toaster;
+export default toastMiddleware;

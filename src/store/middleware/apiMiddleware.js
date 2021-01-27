@@ -1,8 +1,8 @@
-import axios from "axios";
-import * as actions from "../api";
+import { backend } from "../../apis/backend";
+import * as actions from "../apiActions";
 import config from "../../config.json";
 
-const api = ({ dispatch }) => (next) => async (action) => {
+const apiMiddleware = ({ dispatch }) => (next) => async (action) => {
   if (action.type !== actions.apiCallBegan.type) return next(action);
 
   const { url, method, data, onStart, onSuccess, onError } = action.payload;
@@ -12,7 +12,7 @@ const api = ({ dispatch }) => (next) => async (action) => {
   next(action);
 
   try {
-    const response = await axios.request({
+    const response = await backend.request({
       baseURL: config.apiUrl,
       url,
       method,
@@ -30,4 +30,4 @@ const api = ({ dispatch }) => (next) => async (action) => {
   }
 };
 
-export default api;
+export default apiMiddleware;
