@@ -1,7 +1,9 @@
 import React from "react";
 import Joi from "joi";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import Form from "./common/Form";
-import * as userService from "../services/userService";
+import { register } from "../store/auth";
 import auth from "../services/authService";
 
 class RegisterForm extends Form {
@@ -25,7 +27,7 @@ class RegisterForm extends Form {
 
   doSubmit = async () => {
     try {
-      const response = await userService.register(this.state.data);
+      const response = await this.props.register(this.state.data);
       auth.loginWithJwt(
         response.headers["x-access-token"],
         response.headers["x-refresh-token"]
@@ -40,6 +42,8 @@ class RegisterForm extends Form {
   };
 
   render() {
+    if (this.props.currentUser) return <Redirect to="/users" />;
+
     return (
       <div>
         <h1>Register</h1>
@@ -54,4 +58,8 @@ class RegisterForm extends Form {
   }
 }
 
-export default RegisterForm;
+const mapStateToProps = (state) => ({
+  currentUser: state.auth.currentUser,
+});
+
+export default connect(mapStateToProps, { register })(RegisterForm);

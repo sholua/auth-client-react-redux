@@ -30,6 +30,19 @@ export default slice.reducer;
 // Action Creators
 const url = "/auth";
 
+export const register = (user) => (dispatch) => {
+  return dispatch(
+    apiCallBegan({
+      url: `${url}/register`,
+      method: "POST",
+      data: user,
+      onStart: authRequested.type,
+      onSuccess: authReceived.type,
+      onError: authRequestFailed.type,
+    })
+  );
+};
+
 export const login = (email, password) => (dispatch) => {
   return dispatch(
     apiCallBegan({
