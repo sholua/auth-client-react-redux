@@ -1,14 +1,9 @@
-import { setAuthHeader } from "../apis/backend";
 const accessTokenKey = "accessToken";
 const refreshTokenKey = "refreshToken";
-
-const accessToken = getAccessToken();
-if (accessToken) setAuthHeader(accessToken);
 
 export function loginWithJwt(accessToken, refreshToken) {
   localStorage.setItem(accessTokenKey, accessToken);
   localStorage.setItem(refreshTokenKey, refreshToken);
-  setAuthHeader(getAccessToken());
 }
 
 export function logout() {
