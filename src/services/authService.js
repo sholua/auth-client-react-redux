@@ -1,29 +1,21 @@
-const accessTokenKey = "accessToken";
-const refreshTokenKey = "refreshToken";
+import config from "../config.json";
+const accessTokenKey = config.accessTokenKey;
+const refreshTokenKey = config.refreshTokenKey;
 
-export function loginWithJwt(accessToken, refreshToken) {
+export const loginWithJwt = (accessToken, refreshToken) => {
   localStorage.setItem(accessTokenKey, accessToken);
   localStorage.setItem(refreshTokenKey, refreshToken);
-}
-
-export function logout() {
-  localStorage.removeItem(accessTokenKey);
-  localStorage.removeItem(refreshTokenKey);
-}
-
-export function getAccessToken() {
-  return localStorage.getItem(accessTokenKey);
-}
-
-export function getRefreshToken() {
-  return localStorage.getItem(refreshTokenKey);
-}
-
-const authService = {
-  loginWithJwt,
-  logout,
-  getAccessToken,
-  getRefreshToken,
 };
 
-export default authService;
+export const logout = () => {
+  localStorage.removeItem(accessTokenKey);
+  localStorage.removeItem(refreshTokenKey);
+};
+
+export const getAccessToken = () => {
+  return localStorage.getItem(accessTokenKey);
+};
+
+export const getRefreshToken = () => {
+  return localStorage.getItem(refreshTokenKey);
+};
