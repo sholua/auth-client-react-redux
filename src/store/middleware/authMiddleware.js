@@ -1,4 +1,5 @@
 import { apiCallSuccess } from "../apiActions";
+import { authLogout } from "../auth";
 import authService from "../../services/authService";
 
 const localStorageMiddleware = (store) => (next) => (action) => {
@@ -12,6 +13,10 @@ const localStorageMiddleware = (store) => (next) => (action) => {
       action.payload.headers["x-access-token"],
       action.payload.headers["x-refresh-token"]
     );
+  }
+
+  if (action.type === authLogout.type) {
+    authService.logout();
   }
 
   next(action);

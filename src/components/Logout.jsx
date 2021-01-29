@@ -1,16 +1,16 @@
-import React from "react";
-import auth from "../services/authService";
+import React, { useEffect } from "react";
+import { Redirect } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout } from "../store/auth";
 
-class Logout extends React.Component {
-  componentDidMount() {
-    auth.logout();
+const Logout = () => {
+  const dispatch = useDispatch();
 
-    window.location = "/";
-  }
+  useEffect(() => {
+    dispatch(logout());
+  }, [dispatch]);
 
-  render() {
-    return null;
-  }
-}
+  return <Redirect to="/users" />;
+};
 
 export default Logout;

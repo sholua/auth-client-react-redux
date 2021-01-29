@@ -17,13 +17,23 @@ const slice = createSlice({
       auth.loading = false;
     },
 
+    authLogout: (auth, action) => {
+      auth.currentUser = null;
+      auth.loading = false;
+    },
+
     authRequestFailed: (auth, action) => {
       auth.loading = false;
     },
   },
 });
 
-export const { authRequested, authReceived, authRequestFailed } = slice.actions;
+export const {
+  authRequested,
+  authReceived,
+  authLogout,
+  authRequestFailed,
+} = slice.actions;
 
 export default slice.reducer;
 
@@ -51,6 +61,19 @@ export const login = (email, password) => (dispatch) => {
       data: { email, password },
       onStart: authRequested.type,
       onSuccess: authReceived.type,
+      onError: authRequestFailed.type,
+    })
+  );
+};
+
+export const logout = (refreshToken) => (dispatch) => {
+  return dispatch(
+    apiCallBegan({
+      url: `${url}/logout`,
+      method: "DELETE",
+      data: { refreshToken },
+      onStart: authRequested.type,
+      onSuccess: authLogout.type,
       onError: authRequestFailed.type,
     })
   );
