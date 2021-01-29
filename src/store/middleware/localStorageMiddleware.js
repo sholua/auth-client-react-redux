@@ -1,23 +1,15 @@
 import { apiCallSuccess } from "../apiActions";
-import config from "../../config.json";
+import authService from "../../services/authService";
 
 const localStorageMiddleware = (store) => (next) => (action) => {
-  if (
+  const isAuthenticated =
     action.type === apiCallSuccess.type &&
-    action.payload.headers["x-access-token"]
-  ) {
-    localStorage.setItem(
-      config.accessTokenKey,
-      action.payload.headers["x-access-token"]
-    );
-  }
+    action.payload.headers["x-access-token"] &&
+    action.payload.headers["x-refresh-token"];
 
-  if (
-    action.type === apiCallSuccess.type &&
-    action.payload.headers["x-refresh-token"]
-  ) {
-    localStorage.setItem(
-      config.refreshTokenKey,
+  if (isAuthenticated) {
+    authService.loginWithJwt(
+      action.payload.headers["x-access-token"],
       action.payload.headers["x-refresh-token"]
     );
   }

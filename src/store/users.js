@@ -41,7 +41,7 @@ export const loadUsers = () => (dispatch, getState) => {
   const { lastFetch } = getState().entities.users;
 
   const diffInMinutes = moment().diff(moment(lastFetch), "minutes");
-  if (diffInMinutes < 2) return;
+  if (diffInMinutes < 1) return;
 
   return dispatch(
     apiCallBegan({

@@ -1,11 +1,13 @@
+import { setAuthHeader } from "../apis/backend";
 const accessTokenKey = "accessToken";
 const refreshTokenKey = "refreshToken";
 
-// http.setAccessToken(getAccessToken());
+setAuthHeader(getAccessToken());
 
 export function loginWithJwt(accessToken, refreshToken) {
   localStorage.setItem(accessTokenKey, accessToken);
   localStorage.setItem(refreshTokenKey, refreshToken);
+  setAuthHeader(getAccessToken());
 }
 
 export function logout() {
@@ -21,11 +23,11 @@ export function getRefreshToken() {
   return localStorage.getItem(refreshTokenKey);
 }
 
-const auth = {
+const authService = {
   loginWithJwt,
   logout,
   getAccessToken,
   getRefreshToken,
 };
 
-export default auth;
+export default authService;
