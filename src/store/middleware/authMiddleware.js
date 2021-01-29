@@ -2,7 +2,7 @@ import { apiCallSuccess } from "../apiActions";
 import { authLogout } from "../auth";
 import { loginWithJwt, logout } from "../../services/authService";
 
-const localStorageMiddleware = (store) => (next) => (action) => {
+const authMiddeware = (store) => (next) => (action) => {
   const isAuthenticated =
     action.type === apiCallSuccess.type &&
     action.payload.headers["x-access-token"] &&
@@ -22,4 +22,4 @@ const localStorageMiddleware = (store) => (next) => (action) => {
   next(action);
 };
 
-export default localStorageMiddleware;
+export default authMiddeware;
