@@ -25,7 +25,7 @@ backend.interceptors.response.use(null, (error) => {
     originalRequest.url.includes("/auth/refresh_token")
   ) {
     console.log("Loop with axios interseptors when refresh token!!!");
-    //  router.push('/login');
+    window.location.href = "/login";
     return Promise.reject(error);
   }
 
