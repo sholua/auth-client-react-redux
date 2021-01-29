@@ -21,6 +21,6 @@ backend.interceptors.response.use(null, (error) => {
 
 export const setAuthHeader = (accessToken) => {
   Object.assign(backend.defaults, {
-    headers: { Authorization: accessToken },
+    headers: { Authorization: `Bearer ${accessToken}` },
   });
 };
