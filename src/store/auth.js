@@ -71,7 +71,7 @@ export const logout = (refreshToken) => (dispatch) => {
     apiCallBegan({
       url: `${url}/logout`,
       method: "DELETE",
-      data: { refreshToken },
+      data: { params: { refreshToken } },
       onStart: authRequested.type,
       onSuccess: authLogout.type,
       onError: authRequestFailed.type,
