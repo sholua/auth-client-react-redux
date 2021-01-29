@@ -2,7 +2,7 @@ import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import reducer from "./reducer";
 import toastMiddleware from "./middleware/toastMiddleware";
 import apiMidleware from "./middleware/apiMiddleware";
-import localStorageMiddleware from "./middleware/localStorageMiddleware";
+import authMiddleware from "./middleware/authMiddleware";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default function () {
@@ -12,7 +12,7 @@ export default function () {
       ...getDefaultMiddleware(),
       toastMiddleware,
       apiMidleware,
-      localStorageMiddleware,
+      authMiddleware,
     ],
   });
 }

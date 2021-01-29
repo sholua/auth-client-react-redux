@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import Form from "./common/Form";
 import { register } from "../store/auth";
-import auth from "../services/authService";
 
 class RegisterForm extends Form {
   state = {
@@ -27,12 +26,7 @@ class RegisterForm extends Form {
 
   doSubmit = async () => {
     try {
-      const response = await this.props.register(this.state.data);
-      auth.loginWithJwt(
-        response.headers["x-access-token"],
-        response.headers["x-refresh-token"]
-      );
-      window.location = "/";
+      await this.props.register(this.state.data);
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors, ...ex.response.data };
