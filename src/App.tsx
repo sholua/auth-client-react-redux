@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import NavBar from "./components/common/NavBar";
@@ -10,6 +10,8 @@ import NotFound from "./components/NotFound";
 import LoginForm from "./components/LoginForm";
 import Logout from "./components/Logout";
 import RegisterForm from "./components/RegisterForm";
+import { getAccessToken } from "./services/authService";
+import { getCurrentUser } from "./store/auth";
 
 interface User {
   name: String;
@@ -21,6 +23,11 @@ interface RootState {
 }
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (getAccessToken()) dispatch(getCurrentUser());
+  }, [dispatch]);
+
   const user = useSelector(
     (state: RootState) => state.auth.currentUser
   ) as User;

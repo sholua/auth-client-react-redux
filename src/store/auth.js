@@ -66,6 +66,17 @@ export const login = (email, password) => (dispatch) => {
   );
 };
 
+export const getCurrentUser = () => (dispatch) => {
+  return dispatch(
+    apiCallBegan({
+      url: `${url}/me`,
+      onStart: authRequested.type,
+      onSuccess: authReceived.type,
+      onError: authRequestFailed.type,
+    })
+  );
+};
+
 export const logout = (refreshToken) => (dispatch) => {
   return dispatch(
     apiCallBegan({
