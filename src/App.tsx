@@ -12,6 +12,7 @@ import Logout from "./components/Logout";
 import RegisterForm from "./components/RegisterForm";
 import { getAccessToken } from "./services/authService";
 import { getCurrentUser } from "./store/auth";
+import Home from "./components/Home";
 
 interface User {
   name: String;
@@ -38,6 +39,7 @@ function App() {
       <NavBar user={user} />
       <main className="container">
         <Switch>
+          <Route path="/home" component={Home} />
           <Route path="/register" component={RegisterForm} />
           <Route path="/login" component={LoginForm} />
           <Route path="/logout" component={Logout} />
