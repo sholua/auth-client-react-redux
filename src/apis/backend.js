@@ -5,6 +5,7 @@ import {
   getAccessToken,
   getRefreshToken,
   loginWithJwt,
+  logout,
 } from "../services/authService";
 
 export const backend = axios.create({
@@ -24,7 +25,8 @@ backend.interceptors.response.use(null, (error) => {
     error.response.status === 401 &&
     originalRequest.url.includes("/auth/refresh_token")
   ) {
-    window.location.href = "/login";
+    logout(); // remove all tokens from localStorage
+    window.location.href = "/login"; // refresh client code with cleaning redux state
     return Promise.reject(error);
   }
 
