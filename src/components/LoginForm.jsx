@@ -32,7 +32,7 @@ class LoginForm extends Form {
   };
 
   render() {
-    if (this.props.currentUser) return <Redirect to="/users" />;
+    if (this.props.currentUser) return <Redirect to="/home" />;
 
     return (
       <div>
