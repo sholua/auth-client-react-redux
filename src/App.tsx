@@ -15,6 +15,7 @@ import { getCurrentUser } from "./store/auth";
 import Home from "./components/Home";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ForgotPassword from "./components/ForgotPassword";
+import ResetPassword from "./components/ResetPassword";
 
 interface User {
   name: String;
@@ -46,6 +47,10 @@ function App() {
           <Route path="/login" component={LoginForm} />
           <Route path="/logout" component={Logout} />
           <Route path="/forgot_password" component={ForgotPassword} />
+          <Route
+            path="/reset_password/:userId/:token"
+            component={ResetPassword}
+          />
           <ProtectedRoute path="/users" component={Users} />
           <Route path="/not-found" component={NotFound} />
           <Redirect from="/" exact to="/home" />
