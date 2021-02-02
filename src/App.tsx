@@ -14,6 +14,7 @@ import { getAccessToken } from "./services/authService";
 import { getCurrentUser } from "./store/auth";
 import Home from "./components/Home";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ForgotPassword from "./components/ForgotPassword";
 
 interface User {
   name: String;
@@ -44,6 +45,7 @@ function App() {
           <Route path="/register" component={RegisterForm} />
           <Route path="/login" component={LoginForm} />
           <Route path="/logout" component={Logout} />
+          <Route path="/forgot_password" component={ForgotPassword} />
           <ProtectedRoute path="/users" component={Users} />
           <Route path="/not-found" component={NotFound} />
           <Redirect from="/" exact to="/home" />

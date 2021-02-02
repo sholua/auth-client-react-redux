@@ -3,7 +3,7 @@ import Joi from "joi";
 import { connect } from "react-redux";
 import Form from "./common/Form";
 import { login } from "../store/auth";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 
 class LoginForm extends Form {
   state = {
@@ -41,6 +41,9 @@ class LoginForm extends Form {
           {this.renderInput("username", "Username")}
           {this.renderInput("password", "Password", "password")}
           {this.renderButton("Login")}
+          <div>
+            <Link to="/forgot_password">Forgot password?</Link>
+          </div>
         </form>
       </div>
     );
