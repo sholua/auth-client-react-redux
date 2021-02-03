@@ -3,19 +3,19 @@ import { useParams } from "react-router-dom";
 import { Formik } from "formik";
 import { Form, Button } from "react-bootstrap";
 import * as Yup from "yup";
-import { backend } from "../apis/backend";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
+import { backend } from "../apis/backend";
 
 const validationSchema = Yup.object().shape({
-  newPassword: Yup.string().required().label("Password"),
+  newPassword: Yup.string().required().min(8).label("Password"),
 });
 
 const ResetPassword = () => {
   const history = useHistory();
   const { userId, token } = useParams();
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, actions) => {
     const { newPassword } = values;
 
     try {
@@ -27,7 +27,10 @@ const ResetPassword = () => {
       toast.success(response.data);
       history.replace("/login");
     } catch (ex) {
+      actions.setErrors(ex.response.data);
       toast.error(ex.response.data);
+    } finally {
+      actions.setSubmitting(false);
     }
   };
 
@@ -42,19 +45,30 @@ const ResetPassword = () => {
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
-        {({ handleChange, handleSubmit, touched, errors }) => (
-          <Form onSubmit={handleSubmit}>
+        {({
+          handleChange,
+          handleSubmit,
+          values,
+          touched,
+          errors,
+          isSubmitting,
+        }) => (
+          <Form noValidate validated={false} onSubmit={handleSubmit}>
             <Form.Group controlId="formBasicEmail">
               <Form.Label>New password</Form.Label>
               <Form.Control
                 type="password"
                 placeholder="Enter new password"
+                value={values["newPassword"]}
                 onChange={handleChange("newPassword")}
                 isValid={touched.newPassword && !errors.newPassword}
               />
+              <Form.Control.Feedback type="invalid">
+                Please choose a username.
+              </Form.Control.Feedback>
             </Form.Group>
 
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" disabled={isSubmitting}>
               Submit
             </Button>
           </Form>

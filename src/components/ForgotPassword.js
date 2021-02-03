@@ -3,6 +3,7 @@ import { Form, Button } from "react-bootstrap";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { backend } from "../apis/backend";
+import { toast } from "react-toastify";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().required(),
@@ -11,10 +12,16 @@ const validationSchema = Yup.object().shape({
 const ForgotPassword = () => {
   const [emailSent, setEmailSent] = useState(false);
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, actions) => {
     const { email } = values;
-    const result = await backend.post("/auth/forgot_password", { email });
-    if (result) setEmailSent(true);
+    try {
+      const result = await backend.post("/auth/forgot_password", { email });
+      if (result) setEmailSent(true);
+    } catch (ex) {
+      toast.error(ex.response.data);
+    } finally {
+      actions.setSubmitting(false);
+    }
   };
 
   if (emailSent) return <div>Check your email and follow instructions.</div>;
@@ -30,7 +37,7 @@ const ForgotPassword = () => {
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
-        {({ handleChange, handleSubmit, touched, errors }) => (
+        {({ handleChange, handleSubmit, touched, errors, isSubmitting }) => (
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formBasicEmail">
               <Form.Label>Email address</Form.Label>
@@ -45,7 +52,7 @@ const ForgotPassword = () => {
               </Form.Text>
             </Form.Group>
 
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" disabled={isSubmitting}>
               Submit
             </Button>
           </Form>
