@@ -6,7 +6,7 @@ import { backend } from "../apis/backend";
 import { toast } from "react-toastify";
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string().email().required(),
+  email: Yup.string().email().required().label("Email"),
 });
 
 const ForgotPassword = () => {
@@ -37,19 +37,29 @@ const ForgotPassword = () => {
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
-        {({ handleChange, handleSubmit, touched, errors, isSubmitting }) => (
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          touched,
+          errors,
+          isSubmitting,
+        }) => (
           <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="formBasicEmail">
+            <Form.Group>
               <Form.Label>Email address</Form.Label>
               <Form.Control
+                name="email"
                 type="email"
                 placeholder="Enter email"
-                onChange={handleChange("email")}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                isInvalid={touched.email && errors.email}
                 isValid={touched.email && !errors.email}
               />
-              <Form.Text className="text-muted">
-                We'll never share your email with anyone else.
-              </Form.Text>
+              <Form.Control.Feedback type="invalid">
+                {errors.email}
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Button variant="primary" type="submit" disabled={isSubmitting}>

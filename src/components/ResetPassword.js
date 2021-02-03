@@ -8,7 +8,13 @@ import { useHistory } from "react-router-dom";
 import { backend } from "../apis/backend";
 
 const validationSchema = Yup.object().shape({
-  newPassword: Yup.string().required().min(8).label("Password"),
+  newPassword: Yup.string()
+    .required()
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+    )
+    .label("Password"),
 });
 
 const ResetPassword = () => {
@@ -38,7 +44,7 @@ const ResetPassword = () => {
     <div>
       <p>
         Enter your new password. It should include uppercase and lowercase
-        letters, numbers and special symbols. Minimum 8 charakters.
+        letters, numbers and special symbols. Minimum 8 characters.
       </p>
       <Formik
         initialValues={{ newPassword: "" }}
@@ -63,9 +69,15 @@ const ResetPassword = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 isInvalid={touched.newPassword && errors.newPassword}
+                isValid={touched.newPassword && !errors.newPassword}
               />
+              <Form.Control.Feedback type="valid">
+                Looks good!
+              </Form.Control.Feedback>
               <Form.Control.Feedback type="invalid">
-                {errors.newPassword}
+                <div
+                  dangerouslySetInnerHTML={{ __html: errors.newPassword }}
+                ></div>
               </Form.Control.Feedback>
             </Form.Group>
 
