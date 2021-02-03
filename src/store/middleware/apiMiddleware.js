@@ -1,6 +1,5 @@
 import { backend } from "../../apis/backend";
 import * as actions from "../apiActions";
-import config from "../../config.json";
 
 const apiMiddleware = ({ dispatch }) => (next) => async (action) => {
   if (action.type !== actions.apiCallBegan.type) return next(action);
@@ -13,7 +12,6 @@ const apiMiddleware = ({ dispatch }) => (next) => async (action) => {
 
   try {
     const response = await backend.request({
-      baseURL: config.apiUrl,
       url,
       method,
       data,
