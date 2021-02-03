@@ -47,24 +47,25 @@ const ResetPassword = () => {
       >
         {({
           handleChange,
+          handleBlur,
           handleSubmit,
-          values,
           touched,
           errors,
           isSubmitting,
         }) => (
-          <Form noValidate validated={false} onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formBasicEmail">
               <Form.Label>New password</Form.Label>
               <Form.Control
+                name="newPassword"
                 type="password"
                 placeholder="Enter new password"
-                value={values["newPassword"]}
-                onChange={handleChange("newPassword")}
-                isValid={touched.newPassword && !errors.newPassword}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                isInvalid={touched.newPassword && errors.newPassword}
               />
               <Form.Control.Feedback type="invalid">
-                Please choose a username.
+                {errors.newPassword}
               </Form.Control.Feedback>
             </Form.Group>
 
