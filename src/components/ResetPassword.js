@@ -1,11 +1,11 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { Formik } from "formik";
-import { Form, Button } from "react-bootstrap";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
+
 import { backend } from "../apis/backend";
+import { AppForm, AppFormField, SubmitButton } from "./forms";
 
 const validationSchema = Yup.object().shape({
   newPassword: Yup.string()
@@ -46,47 +46,22 @@ const ResetPassword = () => {
         Enter your new password. It should include uppercase and lowercase
         letters, numbers and special symbols. Minimum 8 characters.
       </p>
-      <Formik
+
+      <AppForm
         initialValues={{ newPassword: "" }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          touched,
-          errors,
-          isSubmitting,
-        }) => (
-          <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="formBasicEmail">
-              <Form.Label>New password</Form.Label>
-              <Form.Control
-                name="newPassword"
-                type="password"
-                placeholder="Enter new password"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                isInvalid={touched.newPassword && errors.newPassword}
-                isValid={touched.newPassword && !errors.newPassword}
-              />
-              <Form.Control.Feedback type="valid">
-                Looks good!
-              </Form.Control.Feedback>
-              <Form.Control.Feedback type="invalid">
-                <div
-                  dangerouslySetInnerHTML={{ __html: errors.newPassword }}
-                ></div>
-              </Form.Control.Feedback>
-            </Form.Group>
+        <AppFormField
+          name="newPassword"
+          label="Enter your new password"
+          type="password"
+          placeholder="New password"
+          feedback
+        />
 
-            <Button variant="primary" type="submit" disabled={isSubmitting}>
-              Submit
-            </Button>
-          </Form>
-        )}
-      </Formik>
+        <SubmitButton title="Submit" />
+      </AppForm>
     </div>
   );
 };
