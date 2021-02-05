@@ -24,7 +24,8 @@ const apiMiddleware = ({ dispatch }) => (next) => async (action) => {
     // General
     dispatch(actions.apiCallFailed(ex.response.data));
     // Specific
-    if (onError) dispatch({ type: onError, payload: ex.response.data });
+    if (onError && ex.response.status !== 500)
+      dispatch({ type: onError, payload: ex.response.data });
   }
 };
 

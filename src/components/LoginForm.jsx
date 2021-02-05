@@ -7,7 +7,7 @@ import { login } from "../store/auth";
 import { AppForm, AppFormField, SubmitButton } from "./forms";
 
 const validationSchema = Yup.object().shape({
-  username: Yup.string().email().required().label("Username"),
+  email: Yup.string().email().required().label("Username"),
   password: Yup.string().required().label("Password"),
 });
 
@@ -25,18 +25,18 @@ export default function LoginForm() {
 
       if (errors) {
         formActions.setErrors({
-          username: errors,
-          password: errors,
+          email: "Check your email",
+          password: "Check your password",
         });
       }
     }
   }, [loading, errors]);
 
   const handleSubmit = (values, actions) => {
-    const { username, password } = values;
+    const { email, password } = values;
     formActions = actions;
 
-    dispatch(login(username, password));
+    dispatch(login(email, password));
   };
 
   if (currentUser) return <Redirect to="/home" />;
@@ -45,12 +45,12 @@ export default function LoginForm() {
     <div>
       <h1>Login</h1>
       <AppForm
-        initialValues={{ username: "", password: "" }}
+        initialValues={{ email: "", password: "" }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
         <AppFormField
-          name="username"
+          name="email"
           type="email"
           label="Username"
           placeholder="Enter your email"

@@ -43,7 +43,7 @@ const NavBar = ({ user }) => {
             <React.Fragment>
               <li className="nav-item">
                 <NavLink className="nav-link" to="/profile">
-                  {user.name}
+                  {user.firstName}
                 </NavLink>
               </li>
               <li className="nav-item">

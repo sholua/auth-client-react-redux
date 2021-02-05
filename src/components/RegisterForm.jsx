@@ -7,7 +7,7 @@ import { register } from "../store/auth";
 import { AppForm, AppFormField, SubmitButton } from "./forms";
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required().label("Name"),
+  firstName: Yup.string().required().label("First name"),
   email: Yup.string().email().required().label("Email"),
   password: Yup.string()
     .matches(
@@ -48,15 +48,15 @@ export default function RegisterForm() {
     <div>
       <h1>Register</h1>
       <AppForm
-        initialValues={{ name: "", email: "", password: "" }}
+        initialValues={{ firstName: "", email: "", password: "" }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
         <AppFormField
-          name="name"
+          name="firstName"
           type="text"
-          label="Name"
-          placeholder="Enter your name"
+          label="First name"
+          placeholder="Enter your first name"
         />
 
         <AppFormField
