@@ -1,59 +1,80 @@
-import React from "react";
-import Joi from "joi";
-import { connect } from "react-redux";
+import React, { useEffect } from "react";
 import { Redirect } from "react-router-dom";
-import Form from "./common/Form";
+import * as Yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
+
 import { register } from "../store/auth";
+import { AppForm, AppFormField, SubmitButton } from "./forms";
 
-class RegisterForm extends Form {
-  state = {
-    data: {
-      name: "",
-      email: "",
-      password: "",
-    },
-    errors: {},
-  };
-
-  joiKeys = {
-    name: Joi.string().required().label("Name"),
-    email: Joi.string()
-      .email({ tlds: { allow: false } })
-      .required()
-      .label("Email"),
-    password: Joi.string().min(8).required().label("Password"),
-  };
-
-  doSubmit = async () => {
-    try {
-      await this.props.register(this.state.data);
-    } catch (ex) {
-      if (ex.response && ex.response.status === 400) {
-        const errors = { ...this.state.errors, ...ex.response.data };
-        this.setState({ errors });
-      }
-    }
-  };
-
-  render() {
-    if (this.props.currentUser) return <Redirect to="/home" />;
-
-    return (
-      <div>
-        <h1>Register</h1>
-        <form onSubmit={this.handleSubmit}>
-          {this.renderInput("name", "Name")}
-          {this.renderInput("email", "Email", "email")}
-          {this.renderInput("password", "Password", "password")}
-          {this.renderButton("Register")}
-        </form>
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = (state) => ({
-  currentUser: state.auth.currentUser,
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required().label("Name"),
+  email: Yup.string().email().required().label("Email"),
+  password: Yup.string()
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+    )
+    .required()
+    .label("Password"),
 });
 
-export default connect(mapStateToProps, { register })(RegisterForm);
+let formActions;
+
+export default function RegisterForm() {
+  const dispatch = useDispatch();
+  const currentUser = useSelector((state) => state.auth.currentUser);
+  const loading = useSelector((state) => state.auth.loading);
+  const errors = useSelector((state) => state.auth.errors);
+
+  useEffect(() => {
+    if (formActions) {
+      formActions.setSubmitting(loading);
+
+      if (errors) {
+        formActions.setErrors(errors);
+      }
+    }
+  }, [loading, errors]);
+
+  const handleSubmit = (values, actions) => {
+    formActions = actions;
+
+    dispatch(register(values));
+  };
+
+  if (currentUser) return <Redirect to="/home" />;
+
+  return (
+    <div>
+      <h1>Register</h1>
+      <AppForm
+        initialValues={{ name: "", email: "", password: "" }}
+        onSubmit={handleSubmit}
+        validationSchema={validationSchema}
+      >
+        <AppFormField
+          name="name"
+          type="text"
+          label="Name"
+          placeholder="Enter your name"
+        />
+
+        <AppFormField
+          name="email"
+          type="email"
+          label="Email"
+          placeholder="Enter your email"
+        />
+
+        <AppFormField
+          name="password"
+          type="password"
+          label="Password"
+          placeholder="Enter your password"
+        />
+
+        <SubmitButton title="Submit" />
+      </AppForm>
+    </div>
+  );
+}
