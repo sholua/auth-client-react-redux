@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as Yup from "yup";
 import { Redirect, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,12 +11,30 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().required().label("Password"),
 });
 
+let formActions;
+
 export default function LoginForm() {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.auth.currentUser);
+  const loading = useSelector((state) => state.auth.loading);
+  const errors = useSelector((state) => state.auth.errors);
+
+  useEffect(() => {
+    if (formActions) {
+      formActions.setSubmitting(loading);
+
+      if (errors) {
+        formActions.setErrors({
+          username: errors,
+          password: errors,
+        });
+      }
+    }
+  }, [loading, errors]);
 
   const handleSubmit = (values, actions) => {
     const { username, password } = values;
+    formActions = actions;
 
     dispatch(login(username, password));
   };
@@ -53,54 +71,3 @@ export default function LoginForm() {
     </div>
   );
 }
-
-// class LoginForm extends Form {
-//   state = {
-//     data: {
-//       username: "",
-//       password: "",
-//     },
-//     errors: {},
-//   };
-
-//   joiKeys = {
-//     username: Joi.string().required().label("Username"),
-//     password: Joi.string().required().label("Password"),
-//   };
-
-//   doSubmit = async () => {
-//     try {
-//       const { data } = this.state;
-//       await this.props.login(data.username, data.password);
-//     } catch (ex) {
-//       if (ex.response && ex.response.status === 400) {
-//         const errors = { ...this.state.errors, ...ex.response.data };
-//         this.setState({ errors });
-//       }
-//     }
-//   };
-
-//   render() {
-//     if (this.props.currentUser) return <Redirect to="/home" />;
-
-//     return (
-//       <div>
-//         <h1>Login</h1>
-//         <form onSubmit={this.handleSubmit}>
-//           {this.renderInput("username", "Username")}
-//           {this.renderInput("password", "Password", "password")}
-//           {this.renderButton("Login")}
-//           <div>
-//             <Link to="/forgot_password">Forgot password?</Link>
-//           </div>
-//         </form>
-//       </div>
-//     );
-//   }
-// }
-
-// const mapStateToProps = (state) => ({
-//   currentUser: state.auth.currentUser,
-// });
-
-// export default connect(mapStateToProps, { login })(LoginForm);
