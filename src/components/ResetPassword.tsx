@@ -17,11 +17,26 @@ const validationSchema = Yup.object().shape({
     .label("Password"),
 });
 
-const ResetPassword = () => {
-  const history = useHistory();
-  const { userId, token } = useParams();
+type FormActions = { [key: string]: (arg: boolean | {}) => void };
 
-  const handleSubmit = async (values, actions) => {
+interface ParamTypes {
+  userId: string;
+  token: string;
+}
+
+interface ResetPassworFormValues {
+  newPassword: string;
+}
+
+const ResetPassword = () => {
+  const initialValues: ResetPassworFormValues = { newPassword: "" };
+  const history = useHistory();
+  const { userId, token } = useParams<ParamTypes>();
+
+  const handleSubmit = async (
+    values: ResetPassworFormValues,
+    actions: FormActions
+  ) => {
     const { newPassword } = values;
 
     try {
@@ -48,7 +63,7 @@ const ResetPassword = () => {
       </p>
 
       <AppForm
-        initialValues={{ newPassword: "" }}
+        initialValues={initialValues}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
