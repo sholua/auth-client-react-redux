@@ -2,7 +2,15 @@ import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { checkAuth } from "../services/authService";
 
-const ProtectedRoute = ({ component: Component, ...rest }) => {
+interface ProtectedRouteProps {
+  path: string;
+  component: React.FunctionComponent<any>;
+}
+
+const ProtectedRoute = ({
+  component: Component,
+  ...rest
+}: ProtectedRouteProps) => {
   const isAuthenticated = checkAuth();
 
   return (
