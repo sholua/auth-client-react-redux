@@ -12,7 +12,10 @@ const validationSchema = Yup.object().shape({
 const ForgotPassword = () => {
   const [emailSent, setEmailSent] = useState(false);
 
-  const handleSubmit = async (values, actions) => {
+  const handleSubmit = async (
+    values: { [key: string]: string },
+    actions: { [key: string]: (x: any) => void }
+  ) => {
     const { email } = values;
     try {
       const result = await backend.post("/auth/forgot_password", { email });

@@ -2,7 +2,11 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import { useFormikContext } from "formik";
 
-export default function SubmitButton({ title }) {
+interface SubmitButtonProps {
+  title: string;
+}
+
+export default function SubmitButton({ title }: SubmitButtonProps) {
   const { isSubmitting } = useFormikContext();
 
   return (
