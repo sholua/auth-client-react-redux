@@ -19,3 +19,10 @@ export const getAccessToken = () => {
 export const getRefreshToken = () => {
   return localStorage.getItem(refreshTokenKey);
 };
+
+export const checkAuth = () => {
+  return (
+    !!localStorage.getItem(accessTokenKey) &&
+    !!localStorage.getItem(refreshTokenKey)
+  );
+};
