@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
+import { FormikHelpers } from "formik";
 
 import { backend } from "../apis/backend";
 import { AppForm, AppFormField, SubmitButton } from "./forms";
@@ -19,7 +20,7 @@ const ForgotPassword: React.FC = (): JSX.Element => {
 
   const handleSubmit = async (
     values: { [key: string]: string },
-    actions: { [key: string]: (x: any) => void }
+    actions: FormikHelpers<{}>
   ) => {
     const { email } = values;
     try {

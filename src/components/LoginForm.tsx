@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import * as Yup from "yup";
 import { Redirect, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { FormikHelpers } from "formik";
 
 import { login } from "../store/auth";
 import { AppForm, AppFormField, SubmitButton } from "./forms";
@@ -12,8 +13,7 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().required().label("Password"),
 });
 
-type FormActions = { [key: string]: (arg: boolean | {}) => void };
-let formActions: FormActions;
+let formActions: FormikHelpers<{}>;
 
 interface LoginFormValues {
   email: string;
@@ -40,7 +40,10 @@ export default function LoginForm() {
     }
   }, [loading, errors]);
 
-  const handleSubmit = (values: LoginFormValues, actions: FormActions) => {
+  const handleSubmit = (
+    values: LoginFormValues,
+    actions: FormikHelpers<{}>
+  ) => {
     const { email, password } = values;
     formActions = actions;
 

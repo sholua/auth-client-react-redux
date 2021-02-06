@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
+import { FormikHelpers } from "formik";
 
 import { backend } from "../apis/backend";
 import { AppForm, AppFormField, SubmitButton } from "./forms";
@@ -16,8 +17,6 @@ const validationSchema = Yup.object().shape({
     )
     .label("Password"),
 });
-
-type FormActions = { [key: string]: (arg: boolean | {}) => void };
 
 interface ParamTypes {
   userId: string;
@@ -35,7 +34,7 @@ const ResetPassword = () => {
 
   const handleSubmit = async (
     values: ResetPassworFormValues,
-    actions: FormActions
+    actions: FormikHelpers<{}>
   ) => {
     const { newPassword } = values;
 

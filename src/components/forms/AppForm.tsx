@@ -1,8 +1,20 @@
 import React from "react";
-import { Formik } from "formik";
+import { Formik, FormikHelpers } from "formik";
 import { Form } from "react-bootstrap";
 
-function AppForm({ initialValues, onSubmit, validationSchema, children }) {
+interface AppFormProps {
+  initialValues: {};
+  onSubmit: (values: any, actions: FormikHelpers<{}>) => void;
+  validationSchema: {};
+  children: JSX.Element[];
+}
+
+function AppForm({
+  initialValues,
+  onSubmit,
+  validationSchema,
+  children,
+}: AppFormProps) {
   return (
     <Formik
       initialValues={initialValues}
