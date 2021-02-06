@@ -2,7 +2,20 @@ import React from "react";
 import { useFormikContext } from "formik";
 import { Form } from "react-bootstrap";
 
-function AppFormField({ name, label, feedback = false, ...otherProps }) {
+interface FieldProps {
+  name: string;
+  label?: string;
+  feedback?: boolean | string;
+  type?: string;
+  placeholder?: string;
+}
+
+function AppFormField({
+  name,
+  label,
+  feedback = false,
+  ...otherProps
+}: FieldProps) {
   const { handleChange, handleBlur, errors, touched } = useFormikContext();
 
   return (
@@ -13,13 +26,19 @@ function AppFormField({ name, label, feedback = false, ...otherProps }) {
         name={name}
         onChange={handleChange}
         onBlur={handleBlur}
-        isInvalid={touched[name] && errors[name]}
-        isValid={touched[name] && !errors[name]}
+        isInvalid={
+          touched[name as keyof typeof touched] &&
+          errors[name as keyof typeof errors]
+        }
+        isValid={
+          touched[name as keyof typeof touched] &&
+          !errors[name as keyof typeof errors]
+        }
         {...otherProps}
       />
 
       <Form.Control.Feedback type="invalid">
-        {errors[name]}
+        {errors[name as keyof typeof errors]}
       </Form.Control.Feedback>
 
       {feedback ? (
