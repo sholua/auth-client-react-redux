@@ -1,8 +1,13 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { Navbar } from "react-bootstrap";
+import { User } from "../../store/users";
 
-const NavBar = ({ user }) => {
+interface NavBarProps {
+  user: User;
+}
+
+const NavBar = ({ user }: NavBarProps) => {
   return (
     <Navbar bg="light" expand="lg">
       <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>

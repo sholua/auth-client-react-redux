@@ -16,15 +16,8 @@ import Home from "./components/Home";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
-
-interface User {
-  name: String;
-}
-
-interface RootState {
-  entities: [];
-  auth: any;
-}
+import { AppState } from "./store/reducer";
+import { User } from "./store/users";
 
 function App() {
   const dispatch = useDispatch();
@@ -32,9 +25,7 @@ function App() {
     if (getAccessToken()) dispatch(getCurrentUser());
   }, [dispatch]);
 
-  const user = useSelector(
-    (state: RootState) => state.auth.currentUser
-  ) as User;
+  const user = useSelector((state: AppState) => state.auth.currentUser) as User;
 
   return (
     <React.Fragment>
