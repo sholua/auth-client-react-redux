@@ -9,7 +9,12 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().email().required().label("Email"),
 });
 
-const ForgotPassword = () => {
+interface FormValues {
+  email: string;
+}
+
+const ForgotPassword: React.FC = (): JSX.Element => {
+  const initialValues: FormValues = { email: "" };
   const [emailSent, setEmailSent] = useState(false);
 
   const handleSubmit = async (
@@ -36,7 +41,7 @@ const ForgotPassword = () => {
         email letter with instructions how to reset your password.
       </p>
       <AppForm
-        initialValues={{ email: "" }}
+        initialValues={initialValues}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >

@@ -18,7 +18,7 @@ backend.interceptors.request.use((request) => {
   return request;
 });
 
-backend.interceptors.response.use(null, (error) => {
+backend.interceptors.response.use(response => response, (error) => {
   const originalRequest = error.config;
 
   if (
