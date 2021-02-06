@@ -1,5 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { apiCallBegan } from "./apiActions";
+import { Dispatch } from "redux";
+
+export interface AuthSlice {
+  currentUser: unknown;
+  loading: boolean;
+  errors: null | { [key: string]: string };
+}
 
 const slice = createSlice({
   name: "auth",
@@ -7,7 +14,7 @@ const slice = createSlice({
     currentUser: null,
     loading: false,
     errors: null,
-  },
+  } as AuthSlice,
   reducers: {
     authRequested: (auth, action) => {
       auth.loading = true;
@@ -43,7 +50,9 @@ export default slice.reducer;
 // Action Creators
 const url = "/auth";
 
-export const register = (user) => (dispatch) => {
+export const register = (user: { email: string; password: string }) => (
+  dispatch: Dispatch
+) => {
   return dispatch(
     apiCallBegan({
       url: `${url}/register`,
@@ -56,7 +65,9 @@ export const register = (user) => (dispatch) => {
   );
 };
 
-export const login = (email, password) => (dispatch) => {
+export const login = (email: string, password: string) => (
+  dispatch: Dispatch
+) => {
   return dispatch(
     apiCallBegan({
       url: `${url}/login`,
@@ -69,7 +80,7 @@ export const login = (email, password) => (dispatch) => {
   );
 };
 
-export const getCurrentUser = () => (dispatch) => {
+export const getCurrentUser = () => (dispatch: Dispatch) => {
   return dispatch(
     apiCallBegan({
       url: `${url}/me`,
@@ -80,7 +91,7 @@ export const getCurrentUser = () => (dispatch) => {
   );
 };
 
-export const logout = (refreshToken) => (dispatch) => {
+export const logout = (refreshToken: string | null) => (dispatch: Dispatch) => {
   return dispatch(
     apiCallBegan({
       url: `${url}/logout`,

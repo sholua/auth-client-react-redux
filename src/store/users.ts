@@ -1,6 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { apiCallBegan } from "./apiActions";
 import moment from "moment";
+import { Dispatch } from "redux";
+import { AppState } from "./reducer";
+
+export interface User {
+  _id: string;
+  firstName: string;
+  email: string;
+}
+
+export interface UsersSlice {
+  list: User[];
+  loading: boolean;
+  lastFetch: null | number;
+}
 
 const slice = createSlice({
   name: "users",
@@ -8,7 +22,7 @@ const slice = createSlice({
     list: [],
     loading: false,
     lastFetch: null,
-  },
+  } as UsersSlice,
   reducers: {
     usersRequested: (users, action) => {
       users.loading = true;
@@ -37,7 +51,10 @@ export default slice.reducer;
 // Action Creators
 const url = "/users";
 
-export const loadUsers = () => (dispatch, getState) => {
+export const loadUsers = () => (
+  dispatch: Dispatch,
+  getState: () => AppState
+) => {
   const { lastFetch } = getState().entities.users;
 
   const diffInMinutes = moment().diff(moment(lastFetch), "minutes");
