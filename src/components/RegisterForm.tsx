@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { register } from "../store/auth";
 import { AppForm, AppFormField, SubmitButton } from "./forms";
+import { AppState } from "../store/reducer";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required().label("First name"),
@@ -18,13 +19,25 @@ const validationSchema = Yup.object().shape({
     .label("Password"),
 });
 
-let formActions;
+type FormActions = { [key: string]: (arg: boolean | {}) => void };
+let formActions: FormActions;
+
+interface RegisterFormValues {
+  firstName: string;
+  email: string;
+  password: string;
+}
 
 export default function RegisterForm() {
+  const initialValues: RegisterFormValues = {
+    firstName: "",
+    email: "",
+    password: "",
+  };
   const dispatch = useDispatch();
-  const currentUser = useSelector((state) => state.auth.currentUser);
-  const loading = useSelector((state) => state.auth.loading);
-  const errors = useSelector((state) => state.auth.errors);
+  const currentUser = useSelector((state: AppState) => state.auth.currentUser);
+  const loading = useSelector((state: AppState) => state.auth.loading);
+  const errors = useSelector((state: AppState) => state.auth.errors);
 
   useEffect(() => {
     if (formActions) {
@@ -36,7 +49,7 @@ export default function RegisterForm() {
     }
   }, [loading, errors]);
 
-  const handleSubmit = (values, actions) => {
+  const handleSubmit = (values: RegisterFormValues, actions: FormActions) => {
     formActions = actions;
 
     dispatch(register(values));
@@ -48,7 +61,7 @@ export default function RegisterForm() {
     <div>
       <h1>Register</h1>
       <AppForm
-        initialValues={{ firstName: "", email: "", password: "" }}
+        initialValues={initialValues}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
