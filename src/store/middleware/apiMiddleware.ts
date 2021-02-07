@@ -1,7 +1,12 @@
 import { backend } from "../../apis/backend";
 import * as actions from "../apiActions";
+import { Middleware, Dispatch } from "redux";
+import { AppState } from "../reducer";
+import { ApiCallBeganAction } from "../apiActions";
 
-const apiMiddleware = ({ dispatch }) => (next) => async (action) => {
+const apiMiddleware: Middleware<{}, AppState> = ({ dispatch }) => (
+  next: Dispatch
+) => async (action: ApiCallBeganAction) => {
   if (action.type !== actions.apiCallBegan.type) return next(action);
 
   const { url, method, data, onStart, onSuccess, onError } = action.payload;

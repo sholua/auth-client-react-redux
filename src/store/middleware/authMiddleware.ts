@@ -1,8 +1,13 @@
 import { apiCallSuccess } from "../apiActions";
 import { authLogout } from "../auth";
 import { loginWithJwt, logout } from "../../services/authService";
+import { Dispatch, Middleware } from "redux";
+import { AppState } from "../reducer";
+import { ApiCallSuccessAction } from "../apiActions";
 
-const authMiddeware = (store) => (next) => (action) => {
+const authMiddeware: Middleware<{}, AppState> = () => (next: Dispatch) => (
+  action: ApiCallSuccessAction
+) => {
   const isAuthenticated =
     action.type === apiCallSuccess.type &&
     action.payload.headers["x-access-token"] &&

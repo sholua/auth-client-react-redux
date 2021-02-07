@@ -7,6 +7,7 @@ import {
 import {
   AuthLogoutAction,
   AuthReceivedAction,
+  AuthRequestedAction,
   AuthRequestFailedAction,
 } from "./auth";
 
@@ -16,7 +17,7 @@ export type ApiActions =
   | ApiCallFailedAction;
 
 type AuthActions =
-  | AuthReceivedAction
+  | AuthRequestedAction
   | AuthReceivedAction
   | AuthLogoutAction
   | AuthRequestFailedAction;

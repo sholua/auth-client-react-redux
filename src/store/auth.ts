@@ -28,7 +28,7 @@ const slice = createSlice({
     },
 
     authLogout: (auth, action) => {
-      auth.currentUser = null;
+      auth.currentUser = action;
       auth.loading = false;
     },
 
