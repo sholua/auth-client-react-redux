@@ -1,5 +1,5 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
-import reducer from "./reducer";
+import reducer, { AppState } from "./reducer";
 import toastMiddleware from "./middleware/toastMiddleware";
 import apiMidleware from "./middleware/apiMiddleware";
 import authMiddleware from "./middleware/authMiddleware";
@@ -9,7 +9,7 @@ export default function () {
   return configureStore({
     reducer,
     middleware: [
-      ...getDefaultMiddleware(),
+      ...getDefaultMiddleware<AppState>(),
       toastMiddleware,
       apiMidleware,
       authMiddleware,

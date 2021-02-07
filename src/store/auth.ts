@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { apiCallBegan } from "./apiActions";
 import { Dispatch } from "redux";
+import { User } from "./users";
 
 export interface AuthSlice {
   currentUser: unknown;
@@ -46,6 +47,25 @@ export const {
 } = slice.actions;
 
 export default slice.reducer;
+
+// Action Interfaces
+export interface AuthRequestedAction {
+  type: typeof authRequested.type;
+}
+
+export interface AuthReceivedAction {
+  type: typeof authReceived.type;
+  payload: User[];
+}
+
+export interface AuthLogoutAction {
+  type: typeof authLogout.type;
+}
+
+export interface AuthRequestFailedAction {
+  type: typeof authRequestFailed.type;
+  payload: { [key: string]: string } | string;
+}
 
 // Action Creators
 const url = "/auth";
