@@ -8,7 +8,7 @@ import App from "./App";
 import "bootstrap/dist/css/bootstrap.css";
 import "./index.css";
 
-const store = configureStore();
+export const store = configureStore();
 
 ReactDOM.render(
   <Provider store={store}>
