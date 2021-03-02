@@ -2,8 +2,9 @@ import React, { FC, ReactElement } from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { render, RenderOptions } from "@testing-library/react";
+import configureStore from "../store/configureStore";
 
-import { store } from "../index";
+const store = configureStore();
 
 const AllTheProviders: FC = ({ children }) => {
   return (
