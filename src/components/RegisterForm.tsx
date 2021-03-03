@@ -9,7 +9,7 @@ import { AppForm, AppFormField, SubmitButton } from "./forms";
 import { AppState } from "../store/reducer";
 
 const validationSchema = Yup.object().shape({
-  firstName: Yup.string().required().label("First name"),
+  firstName: Yup.string().min(4).required().label("First name"),
   email: Yup.string().email().required().label("Email"),
   password: Yup.string()
     .matches(

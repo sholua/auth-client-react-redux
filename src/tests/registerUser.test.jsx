@@ -1,27 +1,8 @@
 import { render, screen } from "../test-utils/testing-library-utils";
 import userEvent from "@testing-library/user-event";
-import RegisterForm from "../components/RegisterForm";
 import App from "../App";
 
 describe("register new user", () => {
-  it("should render register form", () => {
-    render(<RegisterForm />);
-
-    const firstNameField = screen.getByPlaceholderText(
-      /enter your first name/i
-    );
-    expect(firstNameField).toBeInTheDocument();
-
-    const emailField = screen.getByPlaceholderText(/enter your email/i);
-    expect(emailField).toBeInTheDocument();
-
-    const passwordField = screen.getByPlaceholderText(/enter your password/i);
-    expect(passwordField).toBeInTheDocument();
-
-    const submitButton = screen.getByRole("button", { name: /submit/i });
-    expect(submitButton).toBeInTheDocument();
-  });
-
   it("should register new user and redirect to home page", async () => {
     render(<App />);
 
