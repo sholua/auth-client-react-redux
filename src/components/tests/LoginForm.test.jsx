@@ -20,6 +20,26 @@ describe("login form", () => {
     expect(submitButton).toBeInTheDocument();
   });
 
+  it("should render red box when invalid email or empty password", async () => {
+    render(<LoginForm />);
+
+    const usernameField = screen.getByPlaceholderText(/enter your email/i);
+    userEvent.clear(usernameField);
+    userEvent.type(usernameField, "test");
+
+    const passwordField = screen.getByPlaceholderText(/enter your password/i);
+    userEvent.clear(passwordField);
+    userEvent.type(passwordField, "");
+
+    const submitButton = screen.getByRole("button", { name: "Submit" });
+    userEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(usernameField).toHaveClass("form-control is-invalid");
+      expect(passwordField).toHaveClass("form-control is-invalid");
+    });
+  });
+
   it("sholud login user", async () => {
     render(<LoginForm />);
 
