@@ -1,6 +1,6 @@
-import { render, screen } from "../test-utils/testing-library-utils";
+import { render, screen } from "../../test-utils/testing-library-utils";
 import userEvent from "@testing-library/user-event";
-import App from "../App";
+import App from "../../App";
 
 describe("register new user", () => {
   it("should register new user and redirect to home page", async () => {

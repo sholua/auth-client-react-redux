@@ -13,6 +13,9 @@ export const handlers = [
   rest.post(`${config.apiUrl}/auth/login`, (req, res, ctx) => {
     return res(ctx.json({ firstName: "Test", email: "test@test.com" }));
   }),
+  rest.delete(`${config.apiUrl}/auth/logout`, (req, res, ctx) => {
+    return res(ctx.json("User logged out!"));
+  }),
   rest.get(`${config.apiUrl}/users`, (req, res, ctx) => {
     return res(
       ctx.json([

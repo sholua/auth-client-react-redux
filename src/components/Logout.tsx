@@ -11,7 +11,7 @@ const Logout = () => {
     dispatch(logout(getRefreshToken()));
   }, [dispatch]);
 
-  return <Redirect to="/users" />;
+  return <Redirect to="/home" />;
 };
 
 export default Logout;

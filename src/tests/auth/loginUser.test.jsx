@@ -1,6 +1,6 @@
-import { render, screen } from "../test-utils/testing-library-utils";
+import { render, screen } from "../../test-utils/testing-library-utils";
 import userEvent from "@testing-library/user-event";
-import App from "../App";
+import App from "../../App";
 
 describe("login user", () => {
   it("sholud login user", async () => {
@@ -9,7 +9,9 @@ describe("login user", () => {
     const loginLink = screen.getByRole("link", { name: /login/i });
     userEvent.click(loginLink);
 
-    const usernameField = screen.getByPlaceholderText(/enter your email/i);
+    const usernameField = await screen.findByPlaceholderText(
+      /enter your email/i
+    );
     userEvent.clear(usernameField);
     userEvent.type(usernameField, "test@test.com");
 
