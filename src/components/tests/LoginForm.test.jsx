@@ -39,21 +39,4 @@ describe("login form", () => {
       expect(passwordField).toHaveClass("form-control is-invalid");
     });
   });
-
-  it("sholud login user", async () => {
-    render(<LoginForm />);
-
-    const usernameField = screen.getByPlaceholderText(/enter your email/i);
-    userEvent.clear(usernameField);
-    userEvent.type(usernameField, "test@test.com");
-
-    const passwordField = screen.getByPlaceholderText(/enter your password/i);
-    userEvent.clear(passwordField);
-    userEvent.type(passwordField, "123456qW!");
-
-    const submitButton = screen.getByRole("button", { name: /submit/i });
-    userEvent.click(submitButton);
-
-    await waitFor(() => expect(window.location.href).toContain("/home"));
-  });
 });
