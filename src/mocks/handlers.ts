@@ -25,6 +25,14 @@ export const handlers = [
   rest.get(`${config.apiUrl}/users`, (req, res, ctx) => {
     return res(
       ctx.json([
+        { _id: "1", firstName: "Test1", email: "test1@test.com" },
+        { _id: "2", firstName: "Test2", email: "test2@test.com" },
+      ])
+    );
+  }),
+  rest.get(`${config.apiUrl}/users`, (req, res, ctx) => {
+    return res(
+      ctx.json([
         { firstName: "Shol", email: "s.52@ukr.net" },
         { firstName: "Oleksandr", email: "test@test.com" },
       ])
