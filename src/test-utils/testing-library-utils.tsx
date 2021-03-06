@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import { render, RenderOptions } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import configureStore from "../store/configureStore";
 
 const store = configureStore();
@@ -14,10 +14,11 @@ const AllTheProviders: FC = ({ children }) => {
   );
 };
 
-const customRender = (
-  ui: ReactElement,
-  options?: Omit<RenderOptions, "queries">
-) => render(ui, { wrapper: AllTheProviders, ...options });
+const customRender = (ui: ReactElement, { route = "/" } = {}) => {
+  window.history.pushState({}, "Test page", route);
+
+  return render(ui, { wrapper: AllTheProviders });
+};
 
 export * from "@testing-library/react";
 

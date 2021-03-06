@@ -19,6 +19,9 @@ export const handlers = [
   rest.post(`${config.apiUrl}/auth/forgot_password`, (req, res, ctx) => {
     return res(ctx.json("Email sent"));
   }),
+  rest.post(`${config.apiUrl}/auth/reset_password`, (req, res, ctx) => {
+    return res(ctx.json("Password changed!"));
+  }),
   rest.get(`${config.apiUrl}/users`, (req, res, ctx) => {
     return res(
       ctx.json([
