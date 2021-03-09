@@ -12,7 +12,7 @@ const Users = () => {
   }, [dispatch]);
 
   return (
-    <ul aria-label="users">
+    <ul data-testid="users">
       {users.map((user) => (
         <li key={user._id}>
           {user.firstName} - <span>{user.email}</span>

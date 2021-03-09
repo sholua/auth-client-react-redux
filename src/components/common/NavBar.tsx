@@ -10,13 +10,18 @@ interface NavBarProps {
 const NavBar = ({ user }: NavBarProps) => {
   return (
     <Navbar bg="light" expand="lg">
-      <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+      <Navbar.Brand href="/">React-Bootstrap</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <ul className="navbar-nav">
           <li className="nav-item">
             <NavLink className="nav-link" to="/users">
               Users
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink className="nav-link" to="/about">
+              About
             </NavLink>
           </li>
           {!user && (

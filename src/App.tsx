@@ -18,6 +18,7 @@ import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
 import { AppState } from "./store/reducer";
 import { User } from "./store/users";
+import About from "./components/About";
 
 function App() {
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ function App() {
       <main className="container">
         <Switch>
           <Route path="/home" component={Home} />
+          <Route path="/about" component={About} />
           <Route path="/register" component={RegisterForm} />
           <Route path="/login" component={LoginForm} />
           <Route path="/logout" component={Logout} />
