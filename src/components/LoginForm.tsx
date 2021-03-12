@@ -50,6 +50,18 @@ export default function LoginForm() {
     dispatch(login(email, password));
   };
 
+  // TODO: make SocialAuth component
+  const socialAuth = (provider: string) => {
+    (window as any).authenticateCallback = function (
+      accessToken: string,
+      refreshToken: string
+    ) {
+      console.log("Tokens!!!!!!!!", accessToken, refreshToken);
+    };
+
+    window.open(`/api/auth/${provider}`);
+  };
+
   if (currentUser) return <Redirect to="/home" />;
 
   return (
@@ -79,6 +91,7 @@ export default function LoginForm() {
           <Link to="/forgot_password">Forgot password?</Link>
         </div>
       </AppForm>
+      <button onClick={() => socialAuth("google")}>Auth with Google+</button>
     </div>
   );
 }
