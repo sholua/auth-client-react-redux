@@ -7,6 +7,7 @@ import { FormikHelpers } from "formik";
 import { login } from "../store/auth";
 import { AppForm, AppFormField, SubmitButton } from "./forms";
 import { AppState } from "../store/reducer";
+import { SocialLogin } from "./SocialLogin";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().required().label("Username"),
@@ -50,18 +51,6 @@ export default function LoginForm() {
     dispatch(login(email, password));
   };
 
-  // TODO: make SocialAuth component
-  const socialAuth = (provider: string) => {
-    (window as any).authenticateCallback = function (
-      accessToken: string,
-      refreshToken: string
-    ) {
-      console.log("Tokens!!!!!!!!", accessToken, refreshToken);
-    };
-
-    window.open(`/api/auth/${provider}`);
-  };
-
   if (currentUser) return <Redirect to="/home" />;
 
   return (
@@ -91,7 +80,7 @@ export default function LoginForm() {
           <Link to="/forgot_password">Forgot password?</Link>
         </div>
       </AppForm>
-      <button onClick={() => socialAuth("google")}>Auth with Google+</button>
+      <SocialLogin provider="google" />
     </div>
   );
 }
