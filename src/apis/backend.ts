@@ -14,7 +14,7 @@ export const backend = axios.create({
 
 backend.interceptors.request.use((request) => {
   const accessToken = getAccessToken();
-  if (accessToken) request.headers.Authorization = `Bearer ${accessToken}`;
+  if (accessToken) request.headers.Authorization = `JWT ${accessToken}`;
   return request;
 });
 
