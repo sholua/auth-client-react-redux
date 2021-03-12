@@ -1,16 +1,22 @@
 import React from "react";
+import { loginWithJwt } from "../services/authService";
+import { getCurrentUser } from "../store/auth";
+import { useDispatch } from "react-redux";
 
 interface SocialLoginProps {
   provider: string;
 }
 
 export const SocialLogin = ({ provider }: SocialLoginProps): JSX.Element => {
+  const dispatch = useDispatch();
+
   const handleAuth = (provider: string) => {
     (window as any).authenticateCallback = function (
       accessToken: string,
       refreshToken: string
     ) {
-      console.log("Tokens!!!!!!!!", accessToken, refreshToken);
+      loginWithJwt(accessToken, refreshToken);
+      dispatch(getCurrentUser());
     };
 
     window.open(`/api/auth/${provider}`);

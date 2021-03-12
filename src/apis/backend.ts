@@ -45,7 +45,7 @@ backend.interceptors.response.use(
           if (response.status === 201) {
             const { accessToken, refreshToken } = response.data;
             loginWithJwt(accessToken, refreshToken);
-            originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+            originalRequest.headers.Authorization = `JWT ${accessToken}`;
             return axios(originalRequest);
           }
         });
