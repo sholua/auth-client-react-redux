@@ -81,6 +81,7 @@ export default function LoginForm() {
         </div>
       </AppForm>
       <SocialLogin provider="google" />
+      <SocialLogin provider="facebook" />
     </div>
   );
 }

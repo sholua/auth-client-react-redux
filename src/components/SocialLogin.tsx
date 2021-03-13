@@ -23,6 +23,6 @@ export const SocialLogin = ({ provider }: SocialLoginProps): JSX.Element => {
   };
 
   return (
-    <button onClick={() => handleAuth(provider)}>Auth with Google+</button>
+    <button onClick={() => handleAuth(provider)}>Auth with {provider}</button>
   );
 };
