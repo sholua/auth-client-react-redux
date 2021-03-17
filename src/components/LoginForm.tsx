@@ -7,6 +7,7 @@ import { FormikHelpers } from "formik";
 import { login } from "../store/auth";
 import { AppForm, AppFormField, SubmitButton } from "./forms";
 import { AppState } from "../store/reducer";
+import { SocialLogin } from "./SocialLogin";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().required().label("Username"),
@@ -79,6 +80,8 @@ export default function LoginForm() {
           <Link to="/forgot_password">Forgot password?</Link>
         </div>
       </AppForm>
+      <SocialLogin provider="google" />
+      <SocialLogin provider="facebook" />
     </div>
   );
 }
