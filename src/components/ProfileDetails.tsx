@@ -12,9 +12,8 @@ export default function ProfileDetails({ user }: Props) {
       <h3>Profile details for: {user.firstName}</h3>
       {user.avatar && (
         <img
-          src={`/api/profile/avatar/${user.avatar}`}
+          src={`/api/profile/avatar/${user.avatar}?width=100`}
           alt={user.firstName}
-          width="200"
         />
       )}
       <ProfileAvatarForm />
