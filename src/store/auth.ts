@@ -123,3 +123,7 @@ export const logout = (refreshToken: string | null) => (dispatch: Dispatch) => {
     })
   );
 };
+
+export const avatarUploaded = (user: User) => (dispatch: Dispatch) => {
+  return dispatch({ type: authReceived.type, payload: user });
+};
