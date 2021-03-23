@@ -48,4 +48,15 @@ export const handlers = [
       ])
     );
   }),
+  rest.post(`${config.apiUrl}/profile/upload/avatar`, (req, res, ctx) => {
+    return res(
+      ctx.json({
+        _id: "test",
+        email: "test@test.com",
+        firstName: "Test",
+        role: "admin",
+        avatar: "avatar-test.jpg",
+      })
+    );
+  }),
 ];

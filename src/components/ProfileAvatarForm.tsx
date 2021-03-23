@@ -41,12 +41,16 @@ export default function ProfileAvatarForm() {
     <div>
       <Container>
         <form onSubmit={handleSubmit}>
-          <input
-            accept=".jpg, .jpeg"
-            type="file"
-            name="avatar"
-            onChange={handleChange}
-          />
+          <div>
+            <label htmlFor="avatar">Upload photo</label>
+            <input
+              id="avatar"
+              accept=".jpg, .jpeg"
+              type="file"
+              name="avatar"
+              onChange={handleChange}
+            />
+          </div>
           <button type="submit" disabled={!isSelectedFile}>
             Submit
           </button>
