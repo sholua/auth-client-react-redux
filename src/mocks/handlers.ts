@@ -22,6 +22,16 @@ export const handlers = [
   rest.post(`${config.apiUrl}/auth/reset_password`, (req, res, ctx) => {
     return res(ctx.json("Password changed!"));
   }),
+  rest.get(`${config.apiUrl}/auth/me`, (req, res, ctx) => {
+    return res(
+      ctx.json({
+        _id: "test",
+        firstName: "Test",
+        email: "test@test.com",
+        role: "pupil",
+      })
+    );
+  }),
   rest.get(`${config.apiUrl}/users`, (req, res, ctx) => {
     return res(
       ctx.json([
@@ -36,6 +46,17 @@ export const handlers = [
         { firstName: "Shol", email: "s.52@ukr.net" },
         { firstName: "Oleksandr", email: "test@test.com" },
       ])
+    );
+  }),
+  rest.post(`${config.apiUrl}/profile/upload/avatar`, (req, res, ctx) => {
+    return res(
+      ctx.json({
+        _id: "test",
+        email: "test@test.com",
+        firstName: "Test",
+        role: "admin",
+        avatar: "avatar-test.jpg",
+      })
     );
   }),
 ];

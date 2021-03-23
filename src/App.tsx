@@ -19,6 +19,7 @@ import ResetPassword from "./components/ResetPassword";
 import { AppState } from "./store/reducer";
 import { User } from "./store/users";
 import About from "./components/About";
+import Profile from "./components/Profile";
 
 function App() {
   const dispatch = useDispatch();
@@ -45,6 +46,7 @@ function App() {
             component={ResetPassword}
           />
           <ProtectedRoute path="/users" component={Users} />
+          <ProtectedRoute path="/profile" component={Profile} />
           <Route path="/not-found" component={NotFound} />
           <Redirect from="/" exact to="/home" />
           <Redirect to="/not-found" />
