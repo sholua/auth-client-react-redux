@@ -1,8 +1,11 @@
 import React, { useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { loadDepartments, deleteDepartment } from "../store/departments";
-import { AppState } from "../store/reducer";
+import {
+  loadDepartments,
+  deleteDepartment,
+  selectDepartments,
+} from "../store/departments";
 import { Link, useRouteMatch } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
@@ -10,9 +13,7 @@ import "react-confirm-alert/src/react-confirm-alert.css";
 export default function Departments() {
   const { url } = useRouteMatch();
   const dispatch = useDispatch();
-  const departments = useSelector(
-    (state: AppState) => state.entities.departments.list
-  );
+  const departments = useSelector(selectDepartments);
 
   useEffect(() => {
     dispatch(loadDepartments());

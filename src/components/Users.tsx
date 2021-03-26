@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { loadUsers } from "../store/users";
-import { AppState } from "../store/reducer";
+import { loadUsers, selectUsers } from "../store/users";
 
 const Users = () => {
   const dispatch = useDispatch();
-  const users = useSelector((state: AppState) => state.entities.users.list);
+  const users = useSelector(selectUsers);
 
   useEffect(() => {
     dispatch(loadUsers());
