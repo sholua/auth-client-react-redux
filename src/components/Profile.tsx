@@ -8,6 +8,7 @@ import { User } from "../store/users";
 import ProfileDetails from "./ProfileDetails";
 import Program from "./Program";
 import Repertoire from "./Repertoire";
+import Departments from "./Departments";
 
 export default function Profile() {
   const user = useSelector((state: AppState) => state.auth.currentUser) as User;
@@ -40,6 +41,12 @@ export default function Profile() {
               <Link to={`${url}/repertoire`}>Repertoire</Link>
             </ListGroup.Item>
           </ListGroup>
+          Admin:
+          <ListGroup>
+            <ListGroup.Item>
+              <Link to={`${url}/departments`}>Departments</Link>
+            </ListGroup.Item>
+          </ListGroup>
         </Col>
         <Col xs={6} sm={9}>
           <Switch>
@@ -56,6 +63,7 @@ export default function Profile() {
               path={`${path}/repertoire`}
               render={(props) => <Repertoire {...props} user={user} />}
             />
+            <Route path={`${path}/departments`} component={Departments} />
           </Switch>
         </Col>
       </Row>
