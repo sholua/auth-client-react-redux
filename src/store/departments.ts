@@ -82,7 +82,24 @@ export default slice.reducer;
 // Action Creators
 const url = "/departments";
 
-export const loadDepartments = () => (
+export const createDepartment = (
+  data: Department,
+  redirectTo: string = "/home"
+) => (dispatch: Dispatch) => {
+  return dispatch(
+    apiCallBegan({
+      url,
+      method: "POST",
+      data,
+      onStart: departmentsRequested.type,
+      onSuccess: departmentReceived.type,
+      onError: departmentsRequestFailed.type,
+      redirectTo,
+    })
+  );
+};
+
+export const readDepartments = () => (
   dispatch: Dispatch,
   getState: () => AppState
 ) => {
@@ -101,24 +118,7 @@ export const loadDepartments = () => (
   );
 };
 
-export const createDepartment = (
-  data: Department,
-  redirectTo: string = "/home"
-) => (dispatch: Dispatch) => {
-  return dispatch(
-    apiCallBegan({
-      url,
-      method: "POST",
-      data,
-      onStart: departmentsRequested.type,
-      onSuccess: departmentReceived.type,
-      onError: departmentsRequestFailed.type,
-      redirectTo,
-    })
-  );
-};
-
-export const editDepartment = (
+export const updateDepartment = (
   data: Department,
   id: string,
   redirectTo: string = "/home"

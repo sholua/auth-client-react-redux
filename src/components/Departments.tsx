@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  loadDepartments,
+  readDepartments,
   deleteDepartment,
   selectDepartments,
 } from "../store/departments";
@@ -16,7 +16,7 @@ export default function Departments() {
   const departments = useSelector(selectDepartments);
 
   useEffect(() => {
-    dispatch(loadDepartments());
+    dispatch(readDepartments());
   }, [dispatch]);
 
   const handleDelete = (id: string) => () => {

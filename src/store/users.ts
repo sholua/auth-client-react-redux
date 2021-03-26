@@ -53,7 +53,7 @@ export default slice.reducer;
 // Action Creators
 const url = "/users";
 
-export const loadUsers = () => (
+export const readUsers = () => (
   dispatch: Dispatch,
   getState: () => AppState
 ) => {

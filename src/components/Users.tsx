@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { loadUsers, selectUsers } from "../store/users";
+import { readUsers, selectUsers } from "../store/users";
 
 const Users = () => {
   const dispatch = useDispatch();
   const users = useSelector(selectUsers);
 
   useEffect(() => {
-    dispatch(loadUsers());
+    dispatch(readUsers());
   }, [dispatch]);
 
   return (

@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 
 import {
   createDepartment,
-  editDepartment,
+  updateDepartment,
   selectDepartmentById,
 } from "../store/departments";
 import { AppForm, AppFormField, SubmitButton } from "./forms";
@@ -60,7 +60,9 @@ export default function DepartmentForm() {
     if (id === "new")
       dispatch(createDepartment(values, "/profile/departments"));
     if (department && department._id)
-      dispatch(editDepartment(values, department._id, "/profile/departments"));
+      dispatch(
+        updateDepartment(values, department._id, "/profile/departments")
+      );
   };
 
   return (
