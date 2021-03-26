@@ -5,13 +5,14 @@ import { Dispatch } from "redux";
 import { AppState } from "./reducer";
 
 export interface Department {
-  _id: string;
+  _id?: string;
   name: string;
 }
 
 export interface DepartmentsSlice {
   list: Department[];
   loading: boolean;
+  errors: null | {};
   lastFetch: null | number;
 }
 
@@ -20,11 +21,13 @@ const slice = createSlice({
   initialState: {
     list: [],
     loading: false,
+    errors: null,
     lastFetch: null,
   } as DepartmentsSlice,
   reducers: {
     departmentsRequested: (departments, action) => {
       departments.loading = true;
+      departments.errors = null;
     },
 
     departmentsReceived: (departments, action) => {
@@ -33,8 +36,15 @@ const slice = createSlice({
       departments.lastFetch = Date.now();
     },
 
+    departmentReceived: (departments, action) => {
+      departments.list = [...departments.list, action.payload];
+      departments.loading = false;
+      departments.lastFetch = Date.now();
+    },
+
     departmentsRequestFailed: (departments, action) => {
       departments.loading = false;
+      departments.errors = action.payload;
     },
   },
 });
@@ -42,6 +52,7 @@ const slice = createSlice({
 export const {
   departmentsRequested,
   departmentsReceived,
+  departmentReceived,
   departmentsRequestFailed,
 } = slice.actions;
 
@@ -64,6 +75,19 @@ export const loadDepartments = () => (
       url,
       onStart: departmentsRequested.type,
       onSuccess: departmentsReceived.type,
+      onError: departmentsRequestFailed.type,
+    })
+  );
+};
+
+export const createDepartment = (data: Department) => (dispatch: Dispatch) => {
+  return dispatch(
+    apiCallBegan({
+      url,
+      method: "POST",
+      data,
+      onStart: departmentsRequested.type,
+      onSuccess: departmentReceived.type,
       onError: departmentsRequestFailed.type,
     })
   );

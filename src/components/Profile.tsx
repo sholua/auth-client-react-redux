@@ -9,6 +9,7 @@ import ProfileDetails from "./ProfileDetails";
 import Program from "./Program";
 import Repertoire from "./Repertoire";
 import Departments from "./Departments";
+import DepartmentForm from "./DepartmentForm";
 
 export default function Profile() {
   const user = useSelector((state: AppState) => state.auth.currentUser) as User;
@@ -62,6 +63,10 @@ export default function Profile() {
             <Route
               path={`${path}/repertoire`}
               render={(props) => <Repertoire {...props} user={user} />}
+            />
+            <Route
+              path={`${path}/departments/:id`}
+              component={DepartmentForm}
             />
             <Route path={`${path}/departments`} component={Departments} />
           </Switch>
