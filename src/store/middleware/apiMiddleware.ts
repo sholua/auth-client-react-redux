@@ -3,13 +3,22 @@ import * as actions from "../apiActions";
 import { Middleware, Dispatch } from "redux";
 import { AppState } from "../reducer";
 import { ApiCallBeganAction } from "../apiActions";
+import history from "../../history";
 
 const apiMiddleware: Middleware<{}, AppState> = ({ dispatch }) => (
   next: Dispatch
 ) => async (action: ApiCallBeganAction) => {
   if (action.type !== actions.apiCallBegan.type) return next(action);
 
-  const { url, method, data, onStart, onSuccess, onError } = action.payload;
+  const {
+    url,
+    method,
+    data,
+    onStart,
+    onSuccess,
+    onError,
+    redirectTo,
+  } = action.payload;
 
   if (onStart) dispatch({ type: onStart });
 
@@ -25,6 +34,7 @@ const apiMiddleware: Middleware<{}, AppState> = ({ dispatch }) => (
     dispatch(actions.apiCallSuccess({ headers: response.headers }));
     // Specific
     if (onSuccess) dispatch({ type: onSuccess, payload: response.data });
+    if (redirectTo) history.push(redirectTo);
   } catch (ex) {
     // General
     dispatch(actions.apiCallFailed(ex.response.data));

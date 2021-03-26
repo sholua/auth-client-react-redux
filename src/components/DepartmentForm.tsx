@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { FormikHelpers } from "formik";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import {
   createDepartment,
@@ -34,7 +34,6 @@ export default function DepartmentForm() {
     (state: AppState) => state.entities.departments.errors
   );
   const dispatch = useDispatch();
-  const history = useHistory();
   const initialValues: DepartmentFormValues = {
     name: department ? department.name : "",
   };
@@ -58,10 +57,10 @@ export default function DepartmentForm() {
   ) => {
     formActions = actions;
 
-    if (id === "new") dispatch(createDepartment(values));
+    if (id === "new")
+      dispatch(createDepartment(values, "/profile/departments"));
     if (department && department._id)
-      dispatch(editDepartment(values, department._id));
-    if (!errors) history.push("/profile/departments");
+      dispatch(editDepartment(values, department._id, "/profile/departments"));
   };
 
   return (

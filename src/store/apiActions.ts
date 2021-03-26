@@ -7,6 +7,7 @@ interface ApiCallBeganPayload {
   onStart?: string;
   onSuccess?: string;
   onError?: string;
+  redirectTo?: string;
 }
 
 interface ApiCallSuccessPayload {

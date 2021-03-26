@@ -49,6 +49,7 @@ const slice = createSlice({
       );
       departments.list[foundIndex] = action.payload;
       departments.loading = false;
+      departments.errors = null;
       departments.lastFetch = Date.now();
     },
 
@@ -91,7 +92,10 @@ export const loadDepartments = () => (
   );
 };
 
-export const createDepartment = (data: Department) => (dispatch: Dispatch) => {
+export const createDepartment = (
+  data: Department,
+  redirectTo: string = "/home"
+) => (dispatch: Dispatch) => {
   return dispatch(
     apiCallBegan({
       url,
@@ -100,13 +104,16 @@ export const createDepartment = (data: Department) => (dispatch: Dispatch) => {
       onStart: departmentsRequested.type,
       onSuccess: departmentReceived.type,
       onError: departmentsRequestFailed.type,
+      redirectTo,
     })
   );
 };
 
-export const editDepartment = (data: Department, id: string) => (
-  dispatch: Dispatch
-) => {
+export const editDepartment = (
+  data: Department,
+  id: string,
+  redirectTo: string = "/home"
+) => (dispatch: Dispatch) => {
   return dispatch(
     apiCallBegan({
       url: `${url}/${id}`,
@@ -114,6 +121,7 @@ export const editDepartment = (data: Department, id: string) => (
       data,
       onSuccess: departmentUpdated.type,
       onError: departmentsRequestFailed.type,
+      redirectTo,
     })
   );
 };
