@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { loadDepartments } from "../store/departments";
+import { loadDepartments, deleteDepartment } from "../store/departments";
 import { AppState } from "../store/reducer";
 import { Link, useRouteMatch } from "react-router-dom";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 export default function Departments() {
   const { url } = useRouteMatch();
@@ -16,6 +18,29 @@ export default function Departments() {
     dispatch(loadDepartments());
   }, [dispatch]);
 
+  const handleDelete = (id: string) => () => {
+    confirmAlert({
+      title: "Confirm to submit",
+      message: "Are you sure to do this.",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => deleteItem(id),
+        },
+        {
+          label: "No",
+          onClick: () => {
+            return;
+          },
+        },
+      ],
+    });
+  };
+
+  const deleteItem = (id: string) => {
+    dispatch(deleteDepartment(id));
+  };
+
   return (
     <div>
       <Link to={`${url}/new`}>
@@ -24,7 +49,17 @@ export default function Departments() {
       <ul data-testid="departments">
         {departments.map((department) => (
           <li key={department._id}>
-            {department.name} <Link to={`${url}/${department._id}`}>Edit</Link>
+            {department.name} <Link to={`${url}/${department._id}`}>Edit</Link>{" "}
+            /{" "}
+            {department._id && (
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={handleDelete(department._id)}
+              >
+                Delete
+              </Button>
+            )}
           </li>
         ))}
       </ul>

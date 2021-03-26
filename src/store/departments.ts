@@ -53,6 +53,14 @@ const slice = createSlice({
       departments.lastFetch = Date.now();
     },
 
+    departmentDeleted: (departments, action) => {
+      departments.list = departments.list.filter(
+        (item) => item._id !== action.payload._id
+      );
+      departments.loading = false;
+      departments.errors = null;
+    },
+
     departmentsRequestFailed: (departments, action) => {
       departments.loading = false;
       departments.errors = action.payload;
@@ -65,6 +73,7 @@ export const {
   departmentsReceived,
   departmentReceived,
   departmentUpdated,
+  departmentDeleted,
   departmentsRequestFailed,
 } = slice.actions;
 
@@ -122,6 +131,17 @@ export const editDepartment = (
       onSuccess: departmentUpdated.type,
       onError: departmentsRequestFailed.type,
       redirectTo,
+    })
+  );
+};
+
+export const deleteDepartment = (id: string) => (dispatch: Dispatch) => {
+  return dispatch(
+    apiCallBegan({
+      url: `${url}/${id}`,
+      method: "DELETE",
+      onSuccess: departmentDeleted.type,
+      onError: departmentsRequestFailed.type,
     })
   );
 };
