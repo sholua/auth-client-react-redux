@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { createSelector } from "reselect";
 import { apiCallBegan } from "./apiActions";
 import moment from "moment";
 import { Dispatch } from "redux";
@@ -42,6 +43,15 @@ const slice = createSlice({
       departments.lastFetch = Date.now();
     },
 
+    departmentUpdated: (departments, action) => {
+      const foundIndex = departments.list.findIndex(
+        (x) => x._id === action.payload._id
+      );
+      departments.list[foundIndex] = action.payload;
+      departments.loading = false;
+      departments.lastFetch = Date.now();
+    },
+
     departmentsRequestFailed: (departments, action) => {
       departments.loading = false;
       departments.errors = action.payload;
@@ -53,6 +63,7 @@ export const {
   departmentsRequested,
   departmentsReceived,
   departmentReceived,
+  departmentUpdated,
   departmentsRequestFailed,
 } = slice.actions;
 
@@ -93,7 +104,28 @@ export const createDepartment = (data: Department) => (dispatch: Dispatch) => {
   );
 };
 
-// Selector
+export const editDepartment = (data: Department, id: string) => (
+  dispatch: Dispatch
+) => {
+  return dispatch(
+    apiCallBegan({
+      url: `${url}/${id}`,
+      method: "PUT",
+      data,
+      onSuccess: departmentUpdated.type,
+      onError: departmentsRequestFailed.type,
+    })
+  );
+};
 
-// Memoization
-// departments => get unresolved departments from the cache
+// Selectors
+export const selectDepartments = (state: AppState) =>
+  state.entities.departments.list;
+
+const selectDepartmentId = (state: AppState, departmentId: string) =>
+  departmentId;
+
+export const selectDepartmentById = createSelector(
+  [selectDepartments, selectDepartmentId],
+  (departments, id) => departments.find((department) => department._id === id)
+);

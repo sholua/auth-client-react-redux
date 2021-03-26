@@ -16,7 +16,13 @@ function AppFormField({
   feedback = false,
   ...otherProps
 }: FieldProps) {
-  const { handleChange, handleBlur, errors, touched } = useFormikContext();
+  const {
+    handleChange,
+    handleBlur,
+    errors,
+    touched,
+    values,
+  } = useFormikContext<{}>();
 
   return (
     <Form.Group>
@@ -24,6 +30,7 @@ function AppFormField({
 
       <Form.Control
         name={name}
+        value={values[name as keyof typeof values]}
         onChange={handleChange}
         onBlur={handleBlur}
         isInvalid={

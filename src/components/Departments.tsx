@@ -23,7 +23,9 @@ export default function Departments() {
       </Link>
       <ul data-testid="departments">
         {departments.map((department) => (
-          <li key={department._id}>{department.name}</li>
+          <li key={department._id}>
+            {department.name} <Link to={`${url}/${department._id}`}>Edit</Link>
+          </li>
         ))}
       </ul>
     </div>
