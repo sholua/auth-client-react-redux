@@ -1,5 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { createSelector } from "reselect";
+import { createSlice, createSelector } from "@reduxjs/toolkit";
 import { apiCallBegan } from "./apiActions";
 import moment from "moment";
 import { Dispatch } from "redux";
