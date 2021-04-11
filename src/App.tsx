@@ -11,12 +11,11 @@ import LoginForm from "./components/LoginForm";
 import Logout from "./components/Logout";
 import RegisterForm from "./components/RegisterForm";
 import { getAccessToken } from "./services/authService";
-import { getCurrentUser } from "./store/auth";
+import { getCurrentUser, selectCurrentUser } from "./store/auth";
 import Home from "./components/Home";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
-import { AppState } from "./store/reducer";
 import { User } from "./store/users";
 import About from "./components/About";
 import Profile from "./components/Profile";
@@ -27,7 +26,7 @@ function App() {
     if (getAccessToken()) dispatch(getCurrentUser());
   }, [dispatch]);
 
-  const user = useSelector((state: AppState) => state.auth.currentUser) as User;
+  const user = useSelector(selectCurrentUser) as User;
 
   return (
     <React.Fragment>

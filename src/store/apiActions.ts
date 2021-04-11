@@ -4,9 +4,10 @@ interface ApiCallBeganPayload {
   url: string;
   method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   data?: any;
-  onStart: string;
-  onSuccess: string;
-  onError: string;
+  onStart?: string;
+  onSuccess?: string;
+  onError?: string;
+  redirectTo?: string;
 }
 
 interface ApiCallSuccessPayload {

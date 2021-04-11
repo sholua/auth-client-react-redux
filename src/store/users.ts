@@ -9,7 +9,7 @@ export interface User {
   firstName: string;
   email: string;
   role: string;
-  avatar?: string;
+  avatar: string;
 }
 
 export interface UsersSlice {
@@ -53,7 +53,7 @@ export default slice.reducer;
 // Action Creators
 const url = "/users";
 
-export const loadUsers = () => (
+export const readUsers = () => (
   dispatch: Dispatch,
   getState: () => AppState
 ) => {
@@ -74,5 +74,4 @@ export const loadUsers = () => (
 
 // Selector
 
-// Memoization
-// users => get unresolved users from the cache
+export const selectUsers = (state: AppState) => state.entities.users.list;
