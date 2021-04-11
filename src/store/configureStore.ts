@@ -14,5 +14,6 @@ export default function () {
       apiMidleware,
       authMiddleware,
     ],
+    devTools: process.env.NODE_ENV !== "production",
   });
 }
