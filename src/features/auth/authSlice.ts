@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { apiCallBegan } from "../../store/apiActions";
 import { Dispatch } from "redux";
-import { User } from "../../store/users";
+import { User } from "../users/users";
 import { AppState } from "../../store/reducer";
 
 export interface AuthSlice {

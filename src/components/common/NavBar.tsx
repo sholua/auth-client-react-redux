@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { Navbar } from "react-bootstrap";
-import { User } from "../../store/users";
+import { User } from "../../features/users/users";
 
 interface NavBarProps {
   user: User;

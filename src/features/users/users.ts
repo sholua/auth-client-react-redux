@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { apiCallBegan } from "./apiActions";
+import { apiCallBegan } from "../../store/apiActions";
 import moment from "moment";
 import { Dispatch } from "redux";
-import { AppState } from "./reducer";
+import { AppState } from "../../store/reducer";
 
 export interface User {
   _id: string;
@@ -18,7 +18,7 @@ export interface UsersSlice {
   lastFetch: null | number;
 }
 
-const slice = createSlice({
+const usersSlice = createSlice({
   name: "users",
   initialState: {
     list: [],
@@ -46,9 +46,9 @@ export const {
   usersRequested,
   usersReceived,
   usersRequestFailed,
-} = slice.actions;
+} = usersSlice.actions;
 
-export default slice.reducer;
+export default usersSlice.reducer;
 
 // Action Creators
 const url = "/users";

@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import usersReducer, { UsersSlice } from "./users";
+import usersReducer, { UsersSlice } from "../features/users/users";
 import departmentsReducer, { DepartmentsSlice } from "./departments";
 
 export interface EntitiesReducer {

@@ -1,5 +1,5 @@
 import React from "react";
-import { User } from "../store/users";
+import { User } from "../features/users/users";
 import ProfileAvatarForm from "./ProfileAvatarForm";
 
 interface Props {
