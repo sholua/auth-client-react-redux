@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { apiCallBegan } from "./apiActions";
+import { apiCallBegan } from "../../store/apiActions";
 import { Dispatch } from "redux";
-import { User } from "./users";
-import { AppState } from "./reducer";
+import { User } from "../../store/users";
+import { AppState } from "../../store/reducer";
 
 export interface AuthSlice {
   currentUser: unknown;
@@ -10,7 +10,7 @@ export interface AuthSlice {
   errors: null | { [key: string]: string };
 }
 
-const slice = createSlice({
+const authSlice = createSlice({
   name: "auth",
   initialState: {
     currentUser: null,
@@ -45,9 +45,9 @@ export const {
   authReceived,
   authLogout,
   authRequestFailed,
-} = slice.actions;
+} = authSlice.actions;
 
-export default slice.reducer;
+export default authSlice.reducer;
 
 // Action Interfaces
 export interface AuthRequestedAction {

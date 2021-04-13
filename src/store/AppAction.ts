@@ -9,7 +9,7 @@ import {
   AuthReceivedAction,
   AuthRequestedAction,
   AuthRequestFailedAction,
-} from "./auth";
+} from "../features/auth/authSlice";
 
 export type ApiActions =
   | ApiCallBeganAction

@@ -3,7 +3,7 @@ import { Container } from "react-bootstrap";
 import { backend } from "../apis/backend";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { avatarUploaded } from "../store/auth";
+import { avatarUploaded } from "../features/auth/authSlice";
 
 export default function ProfileAvatarForm() {
   const [selectedFile, setSelectedFile] = useState<File>();

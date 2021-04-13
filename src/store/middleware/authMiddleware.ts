@@ -1,5 +1,5 @@
 import { apiCallSuccess } from "../apiActions";
-import { authLogout } from "../auth";
+import { authLogout } from "../../features/auth/authSlice";
 import { loginWithJwt, logout } from "../../services/authService";
 import { Dispatch, Middleware } from "redux";
 import { AppState } from "../reducer";

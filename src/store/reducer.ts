@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 import entitiesReducer from "./entities";
-import authReducer, { AuthSlice } from "./auth";
+import authReducer, { AuthSlice } from "../features/auth/authSlice";
 import { EntitiesReducer } from "./entities";
 
 export interface AppState {

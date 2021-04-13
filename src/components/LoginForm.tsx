@@ -4,7 +4,7 @@ import { Redirect, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { FormikHelpers } from "formik";
 
-import { login } from "../store/auth";
+import { login } from "../features/auth/authSlice";
 import { AppForm, AppFormField, SubmitButton } from "./forms";
 import { AppState } from "../store/reducer";
 import { SocialLogin } from "./SocialLogin";
