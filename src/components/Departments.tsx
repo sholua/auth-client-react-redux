@@ -5,7 +5,7 @@ import {
   readDepartments,
   deleteDepartment,
   selectDepartments,
-} from "../store/departments";
+} from "../features/departments/departmentsSlice";
 import { Link, useRouteMatch } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";

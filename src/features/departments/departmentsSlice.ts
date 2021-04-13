@@ -1,8 +1,8 @@
 import { createSlice, createSelector } from "@reduxjs/toolkit";
-import { apiCallBegan } from "./apiActions";
+import { apiCallBegan } from "../../store/apiActions";
 import moment from "moment";
 import { Dispatch } from "redux";
-import { AppState } from "./reducer";
+import { AppState } from "../../store/reducer";
 
 export interface Department {
   _id?: string;
@@ -16,7 +16,7 @@ export interface DepartmentsSlice {
   lastFetch: null | number;
 }
 
-const slice = createSlice({
+const departmentsSlice = createSlice({
   name: "departments",
   initialState: {
     list: [],
@@ -74,9 +74,9 @@ export const {
   departmentUpdated,
   departmentDeleted,
   departmentsRequestFailed,
-} = slice.actions;
+} = departmentsSlice.actions;
 
-export default slice.reducer;
+export default departmentsSlice.reducer;
 
 // Action Creators
 const url = "/departments";

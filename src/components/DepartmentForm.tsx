@@ -8,7 +8,7 @@ import {
   createDepartment,
   updateDepartment,
   selectDepartmentById,
-} from "../store/departments";
+} from "../features/departments/departmentsSlice";
 import { AppForm, AppFormField, SubmitButton } from "./forms";
 import { AppState } from "../store/reducer";
 

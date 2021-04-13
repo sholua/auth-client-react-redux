@@ -1,6 +1,8 @@
 import { combineReducers } from "redux";
-import usersReducer, { UsersSlice } from "../features/users/users";
-import departmentsReducer, { DepartmentsSlice } from "./departments";
+import usersReducer, { UsersSlice } from "../features/users/usersSlice";
+import departmentsReducer, {
+  DepartmentsSlice,
+} from "../features/departments/departmentsSlice";
 
 export interface EntitiesReducer {
   users: UsersSlice;

@@ -1,5 +1,5 @@
 import React from "react";
-import { User } from "../features/users/users";
+import { User } from "../features/users/usersSlice";
 
 interface Props {
   user: User;

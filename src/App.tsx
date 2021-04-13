@@ -16,7 +16,7 @@ import Home from "./components/Home";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
-import { User } from "./features/users/users";
+import { User } from "./features/users/usersSlice";
 import About from "./components/About";
 import Profile from "./components/Profile";
 

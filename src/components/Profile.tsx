@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { Switch, Route, useRouteMatch } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { AppState } from "../store/reducer";
-import { User } from "../features/users/users";
+import { User } from "../features/users/usersSlice";
 import ProfileDetails from "./ProfileDetails";
 import Program from "./Program";
 import Repertoire from "./Repertoire";

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { readUsers, selectUsers } from "../features/users/users";
+import { readUsers, selectUsers } from "../features/users/usersSlice";
 
 const Users = () => {
   const dispatch = useDispatch();
