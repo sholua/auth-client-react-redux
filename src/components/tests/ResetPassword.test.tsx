@@ -5,7 +5,7 @@ import {
 } from "../../test-utils/testing-library-utils";
 import userEvent from "@testing-library/user-event";
 
-import ResetPassword from "../ResetPassword";
+import ResetPassword from "../../features/auth/ResetPassword";
 
 describe("Reset passsword component", () => {
   it("shoud render reset password form and validate email field", async () => {

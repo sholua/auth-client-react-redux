@@ -3,13 +3,13 @@ import { Container, Row, Col, Badge, Alert, ListGroup } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Switch, Route, useRouteMatch } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { AppState } from "../store/reducer";
-import { User } from "../features/users/usersSlice";
+import { AppState } from "../../store/reducer";
+import { User } from "../users/usersSlice";
 import ProfileDetails from "./ProfileDetails";
 import Program from "./Program";
 import Repertoire from "./Repertoire";
-import Departments from "./Departments";
-import DepartmentForm from "./DepartmentForm";
+import Departments from "../departments/Departments";
+import DepartmentForm from "../departments/DepartmentForm";
 
 export default function Profile() {
   const user = useSelector((state: AppState) => state.auth.currentUser) as User;

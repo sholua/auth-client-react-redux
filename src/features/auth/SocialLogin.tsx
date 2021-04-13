@@ -1,6 +1,6 @@
 import React from "react";
-import { loginWithJwt } from "../services/authService";
-import { getCurrentUser } from "../features/auth/authSlice";
+import { loginWithJwt } from "../../services/authService";
+import { getCurrentUser } from "./authSlice";
 import { useDispatch } from "react-redux";
 
 interface SocialLoginProps {

@@ -5,8 +5,8 @@ import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
 import { FormikHelpers } from "formik";
 
-import { backend } from "../apis/backend";
-import { AppForm, AppFormField, SubmitButton } from "./forms";
+import { backend } from "../../apis/backend";
+import { AppForm, AppFormField, SubmitButton } from "../common";
 
 const validationSchema = Yup.object().shape({
   newPassword: Yup.string()

@@ -3,8 +3,8 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { FormikHelpers } from "formik";
 
-import { backend } from "../apis/backend";
-import { AppForm, AppFormField, SubmitButton } from "./forms";
+import { backend } from "../../apis/backend";
+import { AppForm, AppFormField, SubmitButton } from "../common";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().required().label("Email"),

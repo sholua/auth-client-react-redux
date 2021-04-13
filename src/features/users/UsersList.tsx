@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { readUsers, selectUsers } from "../features/users/usersSlice";
+import { readUsers, selectUsers } from "./usersSlice";
 
-const Users = () => {
+const UsersList = () => {
   const dispatch = useDispatch();
   const users = useSelector(selectUsers);
 
@@ -21,4 +21,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default UsersList;

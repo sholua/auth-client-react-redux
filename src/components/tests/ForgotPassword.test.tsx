@@ -5,7 +5,7 @@ import {
 } from "../../test-utils/testing-library-utils";
 import userEvent from "@testing-library/user-event";
 
-import ForgotPassword from "../ForgotPassword";
+import ForgotPassword from "../../features/auth/ForgotPassword";
 
 describe("Forgot password form", () => {
   it("should render forgot password form", () => {

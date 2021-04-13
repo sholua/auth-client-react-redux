@@ -1,39 +1,28 @@
 import React, { useEffect } from "react";
-import { Redirect } from "react-router-dom";
 import * as Yup from "yup";
+import { Redirect, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { FormikHelpers } from "formik";
 
-import { register } from "../features/auth/authSlice";
-import { AppForm, AppFormField, SubmitButton } from "./forms";
-import { AppState } from "../store/reducer";
+import { login } from "./authSlice";
+import { AppForm, AppFormField, SubmitButton } from "../common";
+import { AppState } from "../../store/reducer";
+import { SocialLogin } from "./SocialLogin";
 
 const validationSchema = Yup.object().shape({
-  firstName: Yup.string().min(4).required().label("First name"),
-  email: Yup.string().email().required().label("Email"),
-  password: Yup.string()
-    .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
-    )
-    .required()
-    .label("Password"),
+  email: Yup.string().email().required().label("Username"),
+  password: Yup.string().required().label("Password"),
 });
 
 let formActions: FormikHelpers<{}>;
 
-interface RegisterFormValues {
-  firstName: string;
+interface LoginFormValues {
   email: string;
   password: string;
 }
 
-export default function RegisterForm() {
-  const initialValues: RegisterFormValues = {
-    firstName: "",
-    email: "",
-    password: "",
-  };
+export default function LoginForm() {
+  const initialValues: LoginFormValues = { email: "", password: "" };
   const dispatch = useDispatch();
   const currentUser = useSelector((state: AppState) => state.auth.currentUser);
   const loading = useSelector((state: AppState) => state.auth.loading);
@@ -44,41 +33,38 @@ export default function RegisterForm() {
       formActions.setSubmitting(loading);
 
       if (errors) {
-        formActions.setErrors(errors);
+        formActions.setErrors({
+          email: "Check your email",
+          password: "Check your password",
+        });
       }
     }
   }, [loading, errors]);
 
   const handleSubmit = (
-    values: RegisterFormValues,
+    values: LoginFormValues,
     actions: FormikHelpers<{}>
   ) => {
+    const { email, password } = values;
     formActions = actions;
 
-    dispatch(register(values));
+    dispatch(login(email, password));
   };
 
   if (currentUser) return <Redirect to="/home" />;
 
   return (
     <div>
-      <h1>Register</h1>
+      <h1>Login</h1>
       <AppForm
         initialValues={initialValues}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
         <AppFormField
-          name="firstName"
-          type="text"
-          label="First name"
-          placeholder="Enter your first name"
-        />
-
-        <AppFormField
           name="email"
           type="email"
-          label="Email"
+          label="Username"
           placeholder="Enter your email"
         />
 
@@ -90,7 +76,12 @@ export default function RegisterForm() {
         />
 
         <SubmitButton title="Submit" />
+        <div>
+          <Link to="/forgot_password">Forgot password?</Link>
+        </div>
       </AppForm>
+      <SocialLogin provider="google" />
+      <SocialLogin provider="facebook" />
     </div>
   );
 }

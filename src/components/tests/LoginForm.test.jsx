@@ -4,7 +4,7 @@ import {
   waitFor,
 } from "../../test-utils/testing-library-utils";
 import userEvent from "@testing-library/user-event";
-import LoginForm from "../LoginForm";
+import LoginForm from "../../features/auth/LoginForm";
 
 describe("login form", () => {
   it("should render login form", () => {

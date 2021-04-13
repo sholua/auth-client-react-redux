@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { logout } from "../features/auth/authSlice";
-import { getRefreshToken } from "../services/authService";
+import { logout } from "./authSlice";
+import { getRefreshToken } from "../../services/authService";
 
 const Logout = () => {
   const dispatch = useDispatch();

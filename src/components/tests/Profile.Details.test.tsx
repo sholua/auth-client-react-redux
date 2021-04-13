@@ -1,5 +1,5 @@
 import { render, screen } from "../../test-utils/testing-library-utils";
-import ProfileDetails from "../ProfileDetails";
+import ProfileDetails from "../../features/profile/ProfileDetails";
 
 test("should render ProfileDetails component", () => {
   const user = {

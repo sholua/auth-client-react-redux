@@ -1,9 +1,9 @@
 import { render, screen } from "../../test-utils/testing-library-utils";
-import Users from "../Users";
+import UsersList from "./UsersList";
 
 describe("Users list component", () => {
   it("should render users list", async () => {
-    render(<Users />);
+    render(<UsersList />);
 
     const listItems = await screen.findAllByRole("listitem");
     expect(listItems).toHaveLength(2);

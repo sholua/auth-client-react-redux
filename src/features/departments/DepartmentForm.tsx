@@ -8,9 +8,9 @@ import {
   createDepartment,
   updateDepartment,
   selectDepartmentById,
-} from "../features/departments/departmentsSlice";
-import { AppForm, AppFormField, SubmitButton } from "./forms";
-import { AppState } from "../store/reducer";
+} from "./departmentsSlice";
+import { AppForm, AppFormField, SubmitButton } from "../common";
+import { AppState } from "../../store/reducer";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().min(4).required().label("name"),

@@ -5,20 +5,20 @@ import { useSelector, useDispatch } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import NavBar from "./app/NavBar";
-import Users from "./components/Users";
-import NotFound from "./components/NotFound";
-import LoginForm from "./components/LoginForm";
-import Logout from "./components/Logout";
-import RegisterForm from "./components/RegisterForm";
+import UsersList from "./features/users/UsersList";
+import NotFound from "./app/NotFound";
+import LoginForm from "./features/auth/LoginForm";
+import Logout from "./features/auth/Logout";
+import RegisterForm from "./features/auth/RegisterForm";
 import { getAccessToken } from "./services/authService";
 import { getCurrentUser, selectCurrentUser } from "./features/auth/authSlice";
-import Home from "./components/Home";
-import ProtectedRoute from "./components/ProtectedRoute";
-import ForgotPassword from "./components/ForgotPassword";
-import ResetPassword from "./components/ResetPassword";
+import Home from "./features/home/Home";
+import ProtectedRoute from "./app/ProtectedRoute";
+import ForgotPassword from "./features/auth/ForgotPassword";
+import ResetPassword from "./features/auth/ResetPassword";
 import { User } from "./features/users/usersSlice";
-import About from "./components/About";
-import Profile from "./components/Profile";
+import About from "./features/about/About";
+import Profile from "./features/profile/Profile";
 
 function App() {
   const dispatch = useDispatch();
@@ -44,7 +44,7 @@ function App() {
             path="/reset_password/:userId/:token"
             component={ResetPassword}
           />
-          <ProtectedRoute path="/users" component={Users} />
+          <ProtectedRoute path="/users" component={UsersList} />
           <ProtectedRoute path="/profile" component={Profile} />
           <Route path="/not-found" component={NotFound} />
           <Redirect from="/" exact to="/home" />
