@@ -4,7 +4,7 @@ import { ToastContainer } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
-import NavBar from "./components/common/NavBar";
+import NavBar from "./app/NavBar";
 import Users from "./components/Users";
 import NotFound from "./components/NotFound";
 import LoginForm from "./components/LoginForm";
