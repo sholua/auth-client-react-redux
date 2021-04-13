@@ -6,7 +6,7 @@ import { FormikHelpers } from "formik";
 
 import { register } from "./authSlice";
 import { AppForm, AppFormField, SubmitButton } from "../common";
-import { AppState } from "../../store/reducer";
+import { AppState } from "../../app/store";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().min(4).required().label("First name"),

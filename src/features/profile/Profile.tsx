@@ -3,7 +3,7 @@ import { Container, Row, Col, Badge, Alert, ListGroup } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Switch, Route, useRouteMatch } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { AppState } from "../../store/reducer";
+import { AppState } from "../../app/store";
 import { User } from "../users/usersSlice";
 import ProfileDetails from "./ProfileDetails";
 import Program from "./Program";

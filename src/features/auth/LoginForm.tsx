@@ -6,7 +6,7 @@ import { FormikHelpers } from "formik";
 
 import { login } from "./authSlice";
 import { AppForm, AppFormField, SubmitButton } from "../common";
-import { AppState } from "../../store/reducer";
+import { AppState } from "../../app/store";
 import { SocialLogin } from "./SocialLogin";
 
 const validationSchema = Yup.object().shape({

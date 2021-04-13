@@ -10,7 +10,7 @@ import {
   selectDepartmentById,
 } from "./departmentsSlice";
 import { AppForm, AppFormField, SubmitButton } from "../common";
-import { AppState } from "../../store/reducer";
+import { AppState } from "../../app/store";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().min(4).required().label("name"),
@@ -27,12 +27,8 @@ export default function DepartmentForm() {
   const department = useSelector((state: AppState) =>
     selectDepartmentById(state, id)
   );
-  const loading = useSelector(
-    (state: AppState) => state.entities.departments.loading
-  );
-  const errors = useSelector(
-    (state: AppState) => state.entities.departments.errors
-  );
+  const loading = useSelector((state: AppState) => state.departments.loading);
+  const errors = useSelector((state: AppState) => state.departments.errors);
   const dispatch = useDispatch();
   const initialValues: DepartmentFormValues = {
     name: department ? department.name : "",

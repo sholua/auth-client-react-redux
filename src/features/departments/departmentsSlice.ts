@@ -2,7 +2,7 @@ import { createSlice, createSelector } from "@reduxjs/toolkit";
 import { apiCallBegan } from "../../store/apiActions";
 import moment from "moment";
 import { Dispatch } from "redux";
-import { AppState } from "../../store/reducer";
+import { AppState } from "../../app/store";
 
 export interface Department {
   _id?: string;
@@ -102,7 +102,7 @@ export const readDepartments = () => (
   dispatch: Dispatch,
   getState: () => AppState
 ) => {
-  const { lastFetch } = getState().entities.departments;
+  const { lastFetch } = getState().departments;
 
   const diffInMinutes = moment().diff(moment(lastFetch), "minutes");
   if (diffInMinutes < 2) return;
@@ -146,8 +146,7 @@ export const deleteDepartment = (id: string) => (dispatch: Dispatch) => {
 };
 
 // Selectors
-export const selectDepartments = (state: AppState) =>
-  state.entities.departments.list;
+export const selectDepartments = (state: AppState) => state.departments.list;
 
 const selectDepartmentId = (state: AppState, departmentId: string) =>
   departmentId;

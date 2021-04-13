@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { apiCallBegan } from "../../store/apiActions";
 import moment from "moment";
 import { Dispatch } from "redux";
-import { AppState } from "../../store/reducer";
+import { AppState } from "../../app/store";
 
 export interface User {
   _id: string;
@@ -57,7 +57,7 @@ export const readUsers = () => (
   dispatch: Dispatch,
   getState: () => AppState
 ) => {
-  const { lastFetch } = getState().entities.users;
+  const { lastFetch } = getState().users;
 
   const diffInMinutes = moment().diff(moment(lastFetch), "minutes");
   if (diffInMinutes < 2) return;
@@ -74,4 +74,4 @@ export const readUsers = () => (
 
 // Selector
 
-export const selectUsers = (state: AppState) => state.entities.users.list;
+export const selectUsers = (state: AppState) => state.users.list;

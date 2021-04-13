@@ -1,8 +1,8 @@
 import { toast } from "react-toastify";
-import { apiCallFailed } from "../apiActions";
+import { apiCallFailed } from "../../store/apiActions";
 import { Middleware, Dispatch } from "redux";
-import { ApiActions } from "../AppAction";
-import { AppState } from "../reducer";
+import { ApiActions } from "../../store/AppAction";
+import { AppState } from "../store";
 
 const toastMiddleware: Middleware<{}, AppState> = () => (next: Dispatch) => (
   action: ApiActions

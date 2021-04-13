@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { apiCallBegan } from "../../store/apiActions";
 import { Dispatch } from "redux";
 import { User } from "../users/usersSlice";
-import { AppState } from "../../store/reducer";
+import { AppState } from "../../app/store";
 
 export interface AuthSlice {
   currentUser: unknown;

@@ -1,9 +1,9 @@
-import { apiCallSuccess } from "../apiActions";
+import { apiCallSuccess } from "../../store/apiActions";
 import { authLogout } from "../../features/auth/authSlice";
 import { loginWithJwt, logout } from "../../services/authService";
 import { Dispatch, Middleware } from "redux";
-import { AppState } from "../reducer";
-import { ApiCallSuccessAction } from "../apiActions";
+import { AppState } from "../store";
+import { ApiCallSuccessAction } from "../../store/apiActions";
 
 const authMiddeware: Middleware<{}, AppState> = () => (next: Dispatch) => (
   action: ApiCallSuccessAction

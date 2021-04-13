@@ -1,8 +1,8 @@
 import { backend } from "../../apis/backend";
-import * as actions from "../apiActions";
+import * as actions from "../../store/apiActions";
 import { Middleware, Dispatch } from "redux";
-import { AppState } from "../reducer";
-import { ApiCallBeganAction } from "../apiActions";
+import { AppState } from "../store";
+import { ApiCallBeganAction } from "../../store/apiActions";
 import history from "../../history";
 
 const apiMiddleware: Middleware<{}, AppState> = ({ dispatch }) => (
