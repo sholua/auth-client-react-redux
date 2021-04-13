@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import About from "../About";
+import About from "./About";
 
 test("should render About component", () => {
   render(<About />);

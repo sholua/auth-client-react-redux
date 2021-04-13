@@ -9,7 +9,7 @@ export interface User {
   firstName: string;
   email: string;
   role: string;
-  avatar: string;
+  avatar?: string;
 }
 
 export interface UsersSlice {

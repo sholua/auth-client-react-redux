@@ -1,5 +1,5 @@
 import { render, screen } from "../../test-utils/testing-library-utils";
-import Profile from "../../features/profile/Profile";
+import Profile from "./Profile";
 
 test("should render Profile component", () => {
   render(<Profile />);

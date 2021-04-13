@@ -1,5 +1,5 @@
 import { render, screen } from "../../test-utils/testing-library-utils";
-import Repertoire from "../Repertoire";
+import Repertoire from "./Repertoire";
 
 test("should render Repertoire component", () => {
   const user = {

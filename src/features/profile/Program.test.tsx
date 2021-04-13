@@ -1,5 +1,5 @@
 import { render, screen } from "../../test-utils/testing-library-utils";
-import Program from "../Program";
+import Program from "./Program";
 
 test("should render Program component", () => {
   const user = {
