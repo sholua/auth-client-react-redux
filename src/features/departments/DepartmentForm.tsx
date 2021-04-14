@@ -53,12 +53,9 @@ export default function DepartmentForm() {
   ) => {
     formActions = actions;
 
-    if (id === "new")
-      dispatch(createDepartment(values, "/profile/departments"));
+    if (id === "new") dispatch(createDepartment(values));
     if (department && department._id)
-      dispatch(
-        updateDepartment(values, department._id, "/profile/departments")
-      );
+      dispatch(updateDepartment({ values, departmentId: department._id }));
   };
 
   return (
