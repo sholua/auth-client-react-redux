@@ -2,10 +2,9 @@ import { apiCallSuccess } from "../../store/apiActions";
 import { authLogout } from "../../features/auth/authSlice";
 import { loginWithJwt, logout } from "../../services/authService";
 import { Dispatch, Middleware } from "redux";
-import { AppState } from "../store";
 import { ApiCallSuccessAction } from "../../store/apiActions";
 
-const authMiddeware: Middleware<{}, AppState> = () => (next: Dispatch) => (
+const authMiddeware: Middleware<{}> = () => (next: Dispatch) => (
   action: ApiCallSuccessAction
 ) => {
   const isAuthenticated =

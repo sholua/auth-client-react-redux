@@ -1,11 +1,11 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { AppState } from "../../app/store";
+import {
+  createSlice,
+  createAsyncThunk,
+  createEntityAdapter,
+  PayloadAction,
+} from "@reduxjs/toolkit";
+import { RootState } from "../../app/store";
 import { backend } from "../../apis/backend";
-
-export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
-  const response = await backend.get("/users");
-  return response.data;
-});
 
 export interface User {
   _id: string;
@@ -15,49 +15,43 @@ export interface User {
   avatar?: string;
 }
 
-export interface UsersSlice {
-  list: User[];
-  loading: boolean;
-  error: null;
-}
+const usersAdapter = createEntityAdapter<User>({
+  selectId: (user) => user._id,
+});
+
+const initialState = usersAdapter.getInitialState({
+  loading: false,
+  error: "",
+});
+
+export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
+  const response = await backend.get("/users");
+  return response.data;
+});
 
 const usersSlice = createSlice({
   name: "users",
-  initialState: {
-    list: [],
-    loading: false,
-    error: null,
-  } as UsersSlice,
-  reducers: {
-    usersRequested: (users, action) => {
-      users.loading = true;
-    },
-
-    usersReceived: (users, action) => {
-      users.list = action.payload;
-      users.loading = false;
-      users.error = null;
-    },
-
-    usersRequestFailed: (users, action) => {
-      users.loading = false;
-      users.error = action.payload;
-    },
-  },
+  initialState,
+  reducers: {},
   extraReducers: {
-    [fetchUsers.fulfilled.type]: (state, action) => {
-      state.list = action.payload;
+    [fetchUsers.pending.type]: (state, action) => {
+      state.loading = true;
+    },
+    [fetchUsers.fulfilled.type]: (state, action: PayloadAction<User[]>) => {
+      usersAdapter.setAll(state, action.payload);
       state.loading = false;
+    },
+    [fetchUsers.rejected.type]: (state, action: PayloadAction<string>) => {
+      state.loading = false;
+      state.error = action.payload;
     },
   },
 });
 
-export const {
-  usersRequested,
-  usersReceived,
-  usersRequestFailed,
-} = usersSlice.actions;
-
 export default usersSlice.reducer;
 
-export const selectAllUsers = (state: AppState) => state.users.list;
+export const {
+  selectAll: selectAllUsers,
+  selectById: selectUserById,
+  selectIds: selectUsersIds,
+} = usersAdapter.getSelectors((state: RootState) => state.users);

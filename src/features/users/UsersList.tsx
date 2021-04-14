@@ -5,6 +5,7 @@ import { fetchUsers, selectAllUsers } from "./usersSlice";
 const UsersList = () => {
   const dispatch = useDispatch();
   const users = useSelector(selectAllUsers);
+  console.log("users!!!!!!", users);
 
   useEffect(() => {
     dispatch(fetchUsers());

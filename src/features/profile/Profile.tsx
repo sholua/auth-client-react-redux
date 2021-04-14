@@ -3,7 +3,7 @@ import { Container, Row, Col, Badge, Alert, ListGroup } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Switch, Route, useRouteMatch } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { AppState } from "../../app/store";
+import { RootState } from "../../app/store";
 import { User } from "../users/usersSlice";
 import ProfileDetails from "./ProfileDetails";
 import Program from "./Program";
@@ -12,7 +12,9 @@ import Departments from "../departments/Departments";
 import DepartmentForm from "../departments/DepartmentForm";
 
 export default function Profile() {
-  const user = useSelector((state: AppState) => state.auth.currentUser) as User;
+  const user = useSelector(
+    (state: RootState) => state.auth.currentUser
+  ) as User;
   const { path, url } = useRouteMatch();
 
   if (!user) return <div>Loading...</div>;

@@ -1,11 +1,10 @@
 import { backend } from "../../apis/backend";
 import * as actions from "../../store/apiActions";
 import { Middleware, Dispatch } from "redux";
-import { AppState } from "../store";
 import { ApiCallBeganAction } from "../../store/apiActions";
 import history from "../../history";
 
-const apiMiddleware: Middleware<{}, AppState> = ({ dispatch }) => (
+const apiMiddleware: Middleware<{}> = ({ dispatch }) => (
   next: Dispatch
 ) => async (action: ApiCallBeganAction) => {
   if (action.type !== actions.apiCallBegan.type) return next(action);

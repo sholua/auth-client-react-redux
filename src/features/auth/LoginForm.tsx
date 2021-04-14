@@ -6,7 +6,7 @@ import { FormikHelpers } from "formik";
 
 import { login } from "./authSlice";
 import { AppForm, AppFormField, SubmitButton } from "../common";
-import { AppState } from "../../app/store";
+import { RootState } from "../../app/store";
 import { SocialLogin } from "./SocialLogin";
 
 const validationSchema = Yup.object().shape({
@@ -24,9 +24,9 @@ interface LoginFormValues {
 export default function LoginForm() {
   const initialValues: LoginFormValues = { email: "", password: "" };
   const dispatch = useDispatch();
-  const currentUser = useSelector((state: AppState) => state.auth.currentUser);
-  const loading = useSelector((state: AppState) => state.auth.loading);
-  const errors = useSelector((state: AppState) => state.auth.errors);
+  const currentUser = useSelector((state: RootState) => state.auth.currentUser);
+  const loading = useSelector((state: RootState) => state.auth.loading);
+  const errors = useSelector((state: RootState) => state.auth.errors);
 
   useEffect(() => {
     if (formActions) {

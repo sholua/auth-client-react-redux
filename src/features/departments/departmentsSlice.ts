@@ -2,7 +2,7 @@ import { createSlice, createSelector } from "@reduxjs/toolkit";
 import { apiCallBegan } from "../../store/apiActions";
 import moment from "moment";
 import { Dispatch } from "redux";
-import { AppState } from "../../app/store";
+import { RootState } from "../../app/store";
 
 export interface Department {
   _id?: string;
@@ -100,7 +100,7 @@ export const createDepartment = (
 
 export const readDepartments = () => (
   dispatch: Dispatch,
-  getState: () => AppState
+  getState: () => RootState
 ) => {
   const { lastFetch } = getState().departments;
 
@@ -146,9 +146,9 @@ export const deleteDepartment = (id: string) => (dispatch: Dispatch) => {
 };
 
 // Selectors
-export const selectDepartments = (state: AppState) => state.departments.list;
+export const selectDepartments = (state: RootState) => state.departments.list;
 
-const selectDepartmentId = (state: AppState, departmentId: string) =>
+const selectDepartmentId = (state: RootState, departmentId: string) =>
   departmentId;
 
 export const selectDepartmentById = createSelector(

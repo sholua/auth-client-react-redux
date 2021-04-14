@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { apiCallBegan } from "../../store/apiActions";
 import { Dispatch } from "redux";
 import { User } from "../users/usersSlice";
-import { AppState } from "../../app/store";
+import { RootState } from "../../app/store";
 
 export interface AuthSlice {
   currentUser: unknown;
@@ -131,4 +131,4 @@ export const avatarUploaded = (user: User) => (dispatch: Dispatch) => {
 
 // Selectors
 
-export const selectCurrentUser = (state: AppState) => state.auth.currentUser;
+export const selectCurrentUser = (state: RootState) => state.auth.currentUser;
