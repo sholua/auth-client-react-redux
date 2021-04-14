@@ -4,6 +4,7 @@ import {
   createEntityAdapter,
   PayloadAction,
 } from "@reduxjs/toolkit";
+import moment from "moment";
 import { RootState } from "../../app/store";
 import { backend } from "../../apis/backend";
 import history from "../../history";
@@ -20,6 +21,7 @@ const departmentsAdapter = createEntityAdapter<Department>({
 const initialState = departmentsAdapter.getInitialState({
   loading: false,
   error: "",
+  lastFetch: null as null | number,
 });
 
 export const fetchDepartments = createAsyncThunk(
@@ -27,6 +29,19 @@ export const fetchDepartments = createAsyncThunk(
   async () => {
     const response = await backend.get("/departments");
     return response.data as Department[];
+  },
+  {
+    condition: (_, { getState }) => {
+      const {
+        departments: { loading, lastFetch },
+      } = getState() as RootState;
+
+      const diffInMinutes = moment().diff(moment(lastFetch), "minutes");
+
+      if (loading || diffInMinutes < 5) {
+        return false;
+      }
+    },
   }
 );
 
@@ -78,6 +93,7 @@ const departmentsSlice = createSlice({
     ) => {
       departmentsAdapter.setAll(state, action.payload);
       state.loading = false;
+      state.lastFetch = Date.now();
     },
 
     [fetchDepartments.rejected.type]: (
