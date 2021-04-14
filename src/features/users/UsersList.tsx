@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { readUsers, selectUsers } from "./usersSlice";
+import { fetchUsers, selectAllUsers } from "./usersSlice";
 
 const UsersList = () => {
   const dispatch = useDispatch();
-  const users = useSelector(selectUsers);
+  const users = useSelector(selectAllUsers);
 
   useEffect(() => {
-    dispatch(readUsers());
+    dispatch(fetchUsers());
   }, [dispatch]);
 
   return (

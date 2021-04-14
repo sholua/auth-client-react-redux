@@ -1,8 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { apiCallBegan } from "../../store/apiActions";
-import moment from "moment";
-import { Dispatch } from "redux";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { AppState } from "../../app/store";
+import { backend } from "../../apis/backend";
+
+export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
+  const response = await backend.get("/users");
+  return response.data;
+});
 
 export interface User {
   _id: string;
@@ -15,7 +18,7 @@ export interface User {
 export interface UsersSlice {
   list: User[];
   loading: boolean;
-  lastFetch: null | number;
+  error: null;
 }
 
 const usersSlice = createSlice({
@@ -23,7 +26,7 @@ const usersSlice = createSlice({
   initialState: {
     list: [],
     loading: false,
-    lastFetch: null,
+    error: null,
   } as UsersSlice,
   reducers: {
     usersRequested: (users, action) => {
@@ -33,11 +36,18 @@ const usersSlice = createSlice({
     usersReceived: (users, action) => {
       users.list = action.payload;
       users.loading = false;
-      users.lastFetch = Date.now();
+      users.error = null;
     },
 
     usersRequestFailed: (users, action) => {
       users.loading = false;
+      users.error = action.payload;
+    },
+  },
+  extraReducers: {
+    [fetchUsers.fulfilled.type]: (state, action) => {
+      state.list = action.payload;
+      state.loading = false;
     },
   },
 });
@@ -50,28 +60,4 @@ export const {
 
 export default usersSlice.reducer;
 
-// Action Creators
-const url = "/users";
-
-export const readUsers = () => (
-  dispatch: Dispatch,
-  getState: () => AppState
-) => {
-  const { lastFetch } = getState().users;
-
-  const diffInMinutes = moment().diff(moment(lastFetch), "minutes");
-  if (diffInMinutes < 2) return;
-
-  return dispatch(
-    apiCallBegan({
-      url,
-      onStart: usersRequested.type,
-      onSuccess: usersReceived.type,
-      onError: usersRequestFailed.type,
-    })
-  );
-};
-
-// Selector
-
-export const selectUsers = (state: AppState) => state.users.list;
+export const selectAllUsers = (state: AppState) => state.users.list;
