@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  readDepartments,
+  fetchDepartments,
   deleteDepartment,
-  selectDepartments,
+  selectAllDepartments,
 } from "./departmentsSlice";
 import { Link, useRouteMatch } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
@@ -13,10 +13,10 @@ import "react-confirm-alert/src/react-confirm-alert.css";
 export default function Departments() {
   const { url } = useRouteMatch();
   const dispatch = useDispatch();
-  const departments = useSelector(selectDepartments);
+  const departments = useSelector(selectAllDepartments);
 
   useEffect(() => {
-    dispatch(readDepartments());
+    dispatch(fetchDepartments());
   }, [dispatch]);
 
   const handleDelete = (id: string) => () => {

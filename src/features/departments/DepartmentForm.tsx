@@ -28,7 +28,7 @@ export default function DepartmentForm() {
     selectDepartmentById(state, id)
   );
   const loading = useSelector((state: RootState) => state.departments.loading);
-  const errors = useSelector((state: RootState) => state.departments.errors);
+  const errors = useSelector((state: RootState) => state.departments.error);
   const dispatch = useDispatch();
   const initialValues: DepartmentFormValues = {
     name: department ? department.name : "",

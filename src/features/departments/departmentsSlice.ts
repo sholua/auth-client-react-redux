@@ -1,41 +1,40 @@
-import { createSlice, createSelector } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  createEntityAdapter,
+  PayloadAction,
+} from "@reduxjs/toolkit";
 import { apiCallBegan } from "../../store/apiActions";
-import moment from "moment";
 import { Dispatch } from "redux";
 import { RootState } from "../../app/store";
+import { backend } from "../../apis/backend";
 
 export interface Department {
-  _id?: string;
+  _id: string;
   name: string;
 }
 
-export interface DepartmentsSlice {
-  list: Department[];
-  loading: boolean;
-  errors: null | {};
-  lastFetch: null | number;
-}
+const departmentsAdapter = createEntityAdapter<Department>({
+  selectId: (department) => department._id,
+});
+
+const initialState = departmentsAdapter.getInitialState({
+  loading: false,
+  error: "",
+});
+
+export const fetchDepartments = createAsyncThunk(
+  "departments/fetchDepartments",
+  async () => {
+    const response = await backend.get("/departments");
+    return response.data;
+  }
+);
 
 const departmentsSlice = createSlice({
   name: "departments",
-  initialState: {
-    list: [],
-    loading: false,
-    errors: null,
-    lastFetch: null,
-  } as DepartmentsSlice,
+  initialState,
   reducers: {
-    departmentsRequested: (departments, action) => {
-      departments.loading = true;
-      departments.errors = null;
-    },
-
-    departmentsReceived: (departments, action) => {
-      departments.list = action.payload;
-      departments.loading = false;
-      departments.lastFetch = Date.now();
-    },
-
     departmentReceived: (departments, action) => {
       departments.list = [...departments.list, action.payload];
       departments.loading = false;
@@ -59,21 +58,35 @@ const departmentsSlice = createSlice({
       departments.loading = false;
       departments.errors = null;
     },
+  },
+  extraReducers: {
+    [fetchDepartments.pending.type]: (state, action) => {
+      state.loading = true;
+      state.error = "";
+    },
 
-    departmentsRequestFailed: (departments, action) => {
-      departments.loading = false;
-      departments.errors = action.payload;
+    [fetchDepartments.fulfilled.type]: (
+      state,
+      action: PayloadAction<Department[]>
+    ) => {
+      departmentsAdapter.setAll(state, action.payload);
+      state.loading = false;
+    },
+
+    [fetchDepartments.rejected.type]: (
+      state,
+      action: PayloadAction<string>
+    ) => {
+      state.error = action.payload;
+      state.loading = false;
     },
   },
 });
 
 export const {
-  departmentsRequested,
-  departmentsReceived,
   departmentReceived,
   departmentUpdated,
   departmentDeleted,
-  departmentsRequestFailed,
 } = departmentsSlice.actions;
 
 export default departmentsSlice.reducer;
@@ -94,25 +107,6 @@ export const createDepartment = (
       onSuccess: departmentReceived.type,
       onError: departmentsRequestFailed.type,
       redirectTo,
-    })
-  );
-};
-
-export const readDepartments = () => (
-  dispatch: Dispatch,
-  getState: () => RootState
-) => {
-  const { lastFetch } = getState().departments;
-
-  const diffInMinutes = moment().diff(moment(lastFetch), "minutes");
-  if (diffInMinutes < 2) return;
-
-  return dispatch(
-    apiCallBegan({
-      url,
-      onStart: departmentsRequested.type,
-      onSuccess: departmentsReceived.type,
-      onError: departmentsRequestFailed.type,
     })
   );
 };
@@ -145,13 +139,8 @@ export const deleteDepartment = (id: string) => (dispatch: Dispatch) => {
   );
 };
 
-// Selectors
-export const selectDepartments = (state: RootState) => state.departments.list;
-
-const selectDepartmentId = (state: RootState, departmentId: string) =>
-  departmentId;
-
-export const selectDepartmentById = createSelector(
-  [selectDepartments, selectDepartmentId],
-  (departments, id) => departments.find((department) => department._id === id)
-);
+export const {
+  selectAll: selectAllDepartments,
+  selectById: selectDepartmentById,
+  selectIds: selectDepartmentsIds,
+} = departmentsAdapter.getSelectors((state: RootState) => state.departments);
