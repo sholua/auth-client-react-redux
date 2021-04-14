@@ -55,7 +55,7 @@ export default function DepartmentForm() {
 
     if (id === "new") dispatch(createDepartment(values));
     if (department && department._id)
-      dispatch(updateDepartment({ values, departmentId: department._id }));
+      dispatch(updateDepartment({ _id: department._id, ...values }));
   };
 
   return (

@@ -4,7 +4,7 @@ import { Form } from "react-bootstrap";
 
 interface AppFormProps {
   initialValues: {};
-  onSubmit: (values: any, actions: FormikHelpers<{}>) => void;
+  onSubmit: (values: any, actions: FormikHelpers<any>) => void;
   validationSchema: {};
   children: JSX.Element[];
 }

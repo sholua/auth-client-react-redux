@@ -56,14 +56,9 @@ export const createDepartment = createAsyncThunk(
 
 export const updateDepartment = createAsyncThunk(
   "departments/updateDepartment",
-  async ({
-    values,
-    departmentId,
-  }: {
-    values: Omit<Department, "_id">;
-    departmentId: string;
-  }) => {
-    const response = await backend.put(`/departments/${departmentId}`, values);
+  async (department: Department) => {
+    const { _id, ...fields } = department;
+    const response = await backend.put(`/departments/${_id}`, fields);
     history.push("/profile/departments");
     return response.data;
   }
