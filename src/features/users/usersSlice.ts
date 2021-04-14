@@ -4,6 +4,7 @@ import {
   createEntityAdapter,
   PayloadAction,
 } from "@reduxjs/toolkit";
+import moment from "moment";
 import { RootState } from "../../app/store";
 import { backend } from "../../apis/backend";
 
@@ -22,12 +23,29 @@ const usersAdapter = createEntityAdapter<User>({
 const initialState = usersAdapter.getInitialState({
   loading: false,
   error: "",
+  lastFetch: null as null | number,
 });
 
-export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
-  const response = await backend.get("/users");
-  return response.data;
-});
+export const fetchUsers = createAsyncThunk(
+  "users/fetchUsers",
+  async () => {
+    const response = await backend.get("/users");
+    return response.data;
+  },
+  {
+    condition: (_, { getState }) => {
+      const {
+        users: { loading, lastFetch },
+      } = getState() as RootState;
+
+      const diffInMinutes = moment().diff(moment(lastFetch), "minutes");
+
+      if (loading || diffInMinutes < 5) {
+        return false;
+      }
+    },
+  }
+);
 
 const usersSlice = createSlice({
   name: "users",
@@ -40,6 +58,7 @@ const usersSlice = createSlice({
     [fetchUsers.fulfilled.type]: (state, action: PayloadAction<User[]>) => {
       usersAdapter.setAll(state, action.payload);
       state.loading = false;
+      state.lastFetch = Date.now();
     },
     [fetchUsers.rejected.type]: (state, action: PayloadAction<string>) => {
       state.loading = false;
