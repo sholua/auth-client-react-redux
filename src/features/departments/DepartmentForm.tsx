@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import * as Yup from "yup";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { FormikHelpers } from "formik";
 import { useParams, useHistory } from "react-router-dom";
 
@@ -11,14 +11,14 @@ import {
   Department,
 } from "./departmentsSlice";
 import { AppForm, AppFormField, SubmitButton } from "../common";
-import { RootState, AppDispatch } from "../../app/store";
+import { RootState, useAppDispatch } from "../../app/store";
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().min(1).required().label("name"),
+  name: Yup.string().min(4).required().label("name"),
 });
 
 export default function DepartmentForm() {
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
   const { id } = useParams<{ id: string }>();
   const department = useSelector((state: RootState) =>
@@ -47,17 +47,13 @@ export default function DepartmentForm() {
 
     if (department && department._id) {
       const resultAction = await dispatch(
-        // @ts-ignore
         updateDepartment({ _id: department._id, ...values })
       );
       if (updateDepartment.fulfilled.match(resultAction)) {
-        console.log(resultAction);
         history.push("/profile/departments");
       } else {
-        console.log(resultAction);
-        if (resultAction.payload) {
-          formikHelpers.setErrors(resultAction.payload);
-        }
+        if (resultAction.payload)
+          formikHelpers.setErrors(resultAction.payload as FormValues);
       }
       formikHelpers.setSubmitting(false);
     }

@@ -1,4 +1,10 @@
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import {
+  AnyAction,
+  configureStore,
+  getDefaultMiddleware,
+  ThunkDispatch,
+} from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";
 
 import authReducer from "../features/auth/authSlice";
 import usersReducer from "../features/users/usersSlice";
@@ -24,6 +30,8 @@ const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>;
 
-export type AppDispatch = typeof store.dispatch;
+export type AppDispatch = typeof store.dispatch &
+  ThunkDispatch<RootState, void, AnyAction>;
+export const useAppDispatch = () => useDispatch<AppDispatch>();
 
 export default store;

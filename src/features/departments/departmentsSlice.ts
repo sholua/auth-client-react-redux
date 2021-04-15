@@ -59,26 +59,23 @@ export const createDepartment = createAsyncThunk(
   }
 );
 
-export const updateDepartment = createAsyncThunk<
-  Department,
-  { id: string } & Partial<Department>,
-  {
-    rejectValue: ValidationErrors;
-  }
->("departments/updateDepartment", async (department, { rejectWithValue }) => {
-  const { _id, ...fields } = department;
-  try {
-    const response = await backend.put(`/departments/${_id}`, fields);
-    return response.data;
-  } catch (err) {
-    let error: AxiosError<ValidationErrors> = err;
-    if (!error.response) {
-      throw err;
-    }
+export const updateDepartment = createAsyncThunk(
+  "departments/updateDepartment",
+  async (department: Department, { rejectWithValue }) => {
+    const { _id, ...fields } = department;
+    try {
+      const response = await backend.put(`/departments/${_id}`, fields);
+      return response.data;
+    } catch (err) {
+      let error: AxiosError<ValidationErrors> = err;
+      if (!error.response) {
+        throw err;
+      }
 
-    return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data);
+    }
   }
-});
+);
 
 export const deleteDepartment = createAsyncThunk(
   "departments/deleteDepartment",
