@@ -2,60 +2,65 @@ import React, { useEffect } from "react";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { FormikHelpers } from "formik";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 
 import {
   createDepartment,
   updateDepartment,
   selectDepartmentById,
+  Department,
 } from "./departmentsSlice";
 import { AppForm, AppFormField, SubmitButton } from "../common";
-import { RootState } from "../../app/store";
+import { RootState, AppDispatch } from "../../app/store";
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().min(4).required().label("name"),
+  name: Yup.string().min(1).required().label("name"),
 });
 
-let formActions: FormikHelpers<{}>;
-
-interface DepartmentFormValues {
-  name: string;
-}
-
 export default function DepartmentForm() {
+  const dispatch: AppDispatch = useDispatch();
+  const history = useHistory();
   const { id } = useParams<{ id: string }>();
   const department = useSelector((state: RootState) =>
     selectDepartmentById(state, id)
   );
-  const loading = useSelector((state: RootState) => state.departments.loading);
-  const errors = useSelector((state: RootState) => state.departments.error);
-  const dispatch = useDispatch();
-  const initialValues: DepartmentFormValues = {
-    name: department ? department.name : "",
-  };
 
   useEffect(() => {
-    if (formActions) {
-      formActions.setSubmitting(loading);
-
-      if (errors) {
-        formActions.setErrors(errors);
-      }
-    }
     // TODO: load department by id
     if (!department && id !== "new")
       console.log("Should load department by id");
-  }, [loading, errors, department, id]);
+  }, [department, id]);
 
-  const handleSubmit = (
-    values: DepartmentFormValues,
-    actions: FormikHelpers<{}>
+  interface FormValues extends Omit<Department, "_id"> {}
+
+  const initialValues: FormValues = {
+    name: department ? department.name : "",
+  };
+
+  const handleSubmit = async (
+    values: FormValues,
+    formikHelpers: FormikHelpers<FormValues>
   ) => {
-    formActions = actions;
+    formikHelpers.setSubmitting(true);
 
-    if (id === "new") dispatch(createDepartment(values));
-    if (department && department._id)
-      dispatch(updateDepartment({ _id: department._id, ...values }));
+    // if (id === "new") dispatch(createDepartment(values));
+
+    if (department && department._id) {
+      const resultAction = await dispatch(
+        // @ts-ignore
+        updateDepartment({ _id: department._id, ...values })
+      );
+      if (updateDepartment.fulfilled.match(resultAction)) {
+        console.log(resultAction);
+        history.push("/profile/departments");
+      } else {
+        console.log(resultAction);
+        if (resultAction.payload) {
+          formikHelpers.setErrors(resultAction.payload);
+        }
+      }
+      formikHelpers.setSubmitting(false);
+    }
   };
 
   return (

@@ -4,14 +4,20 @@ import {
   createEntityAdapter,
   PayloadAction,
 } from "@reduxjs/toolkit";
+import { AxiosError } from "axios";
 import moment from "moment";
 import { RootState } from "../../app/store";
 import { backend } from "../../apis/backend";
-import history from "../../history";
 
 export interface Department {
   _id: string;
   name: string;
+}
+
+// TODO: Send this shape of errors from backend
+interface ValidationErrors {
+  errorMessage: string;
+  field_errors: Record<string, string>;
 }
 
 const departmentsAdapter = createEntityAdapter<Department>({
@@ -49,20 +55,30 @@ export const createDepartment = createAsyncThunk(
   "departments/createDepartment",
   async (initialDepartment: Omit<Department, "_id">) => {
     const response = await backend.post("/departments", initialDepartment);
-    history.push("/profile/departments");
     return response.data;
   }
 );
 
-export const updateDepartment = createAsyncThunk(
-  "departments/updateDepartment",
-  async (department: Department) => {
-    const { _id, ...fields } = department;
-    const response = await backend.put(`/departments/${_id}`, fields);
-    history.push("/profile/departments");
-    return response.data;
+export const updateDepartment = createAsyncThunk<
+  Department,
+  { id: string } & Partial<Department>,
+  {
+    rejectValue: ValidationErrors;
   }
-);
+>("departments/updateDepartment", async (department, { rejectWithValue }) => {
+  const { _id, ...fields } = department;
+  try {
+    const response = await backend.put(`/departments/${_id}`, fields);
+    return response.data;
+  } catch (err) {
+    let error: AxiosError<ValidationErrors> = err;
+    if (!error.response) {
+      throw err;
+    }
+
+    return rejectWithValue(error.response.data);
+  }
+});
 
 export const deleteDepartment = createAsyncThunk(
   "departments/deleteDepartment",
