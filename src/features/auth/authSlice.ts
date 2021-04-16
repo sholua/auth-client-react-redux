@@ -12,6 +12,11 @@ interface UserForRegister {
   password: string;
 }
 
+interface LoginCredentials {
+  email: string;
+  password: string;
+}
+
 export const register = createAsyncThunk<
   User,
   UserForRegister,
@@ -19,6 +24,23 @@ export const register = createAsyncThunk<
 >("auth/register", async (user, { rejectWithValue }) => {
   try {
     const response = await backend.post("/auth/register", user);
+    loginWithJwt(
+      response.headers["x-access-token"],
+      response.headers["x-refresh-token"]
+    );
+    return response.data;
+  } catch (err) {
+    if (err.response) return rejectWithValue(err.response.data);
+  }
+});
+
+export const login = createAsyncThunk<
+  User,
+  LoginCredentials,
+  { rejectValue: Record<string, string> }
+>("auth/login", async (credentials, { rejectWithValue }) => {
+  try {
+    const response = await backend.post("/auth/login", credentials);
     loginWithJwt(
       response.headers["x-access-token"],
       response.headers["x-refresh-token"]
@@ -76,6 +98,19 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = payload;
     },
+
+    [login.pending.type]: (state, { payload }) => {
+      state.loading = true;
+      state.error = "";
+    },
+    [login.fulfilled.type]: (state, { payload }: PayloadAction<User>) => {
+      state.loading = false;
+      state.currentUser = payload;
+    },
+    [login.rejected.type]: (state, { payload }: PayloadAction<string>) => {
+      state.loading = false;
+      state.error = payload;
+    },
   },
 });
 
@@ -110,20 +145,20 @@ export interface AuthRequestFailedAction {
 // Action Creators
 const url = "/auth";
 
-export const login = (email: string, password: string) => (
-  dispatch: Dispatch
-) => {
-  return dispatch(
-    apiCallBegan({
-      url: `${url}/login`,
-      method: "POST",
-      data: { email, password },
-      onStart: authRequested.type,
-      onSuccess: authReceived.type,
-      onError: authRequestFailed.type,
-    })
-  );
-};
+// export const login = (email: string, password: string) => (
+//   dispatch: Dispatch
+// ) => {
+//   return dispatch(
+//     apiCallBegan({
+//       url: `${url}/login`,
+//       method: "POST",
+//       data: { email, password },
+//       onStart: authRequested.type,
+//       onSuccess: authReceived.type,
+//       onError: authRequestFailed.type,
+//     })
+//   );
+// };
 
 export const getCurrentUser = () => (dispatch: Dispatch) => {
   return dispatch(

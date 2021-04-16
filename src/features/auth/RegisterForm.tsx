@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 import { FormikHelpers } from "formik";
 
@@ -27,6 +27,7 @@ interface RegisterFormValues {
 
 export default function RegisterForm() {
   const dispatch = useAppDispatch();
+  const history = useHistory();
 
   const initialValues: RegisterFormValues = {
     firstName: "",
@@ -41,7 +42,7 @@ export default function RegisterForm() {
     formikHelpers.setSubmitting(true);
 
     const resultAction = await dispatch(register(values));
-    if (register.fulfilled.match(resultAction)) return <Redirect to="/home" />;
+    if (register.fulfilled.match(resultAction)) return history.replace("/home");
     else if (resultAction.payload)
       formikHelpers.setErrors(resultAction.payload);
 

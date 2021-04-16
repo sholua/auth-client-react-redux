@@ -1,20 +1,18 @@
-import React, { useEffect } from "react";
+import React from "react";
 import * as Yup from "yup";
-import { Redirect, Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
 import { FormikHelpers } from "formik";
 
 import { login } from "./authSlice";
 import { AppForm, AppFormField, SubmitButton } from "../common";
-import { RootState } from "../../app/store";
+import { useAppDispatch } from "../../app/store";
 import { SocialLogin } from "./SocialLogin";
+import { toast } from "react-toastify";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().required().label("Username"),
   password: Yup.string().required().label("Password"),
 });
-
-let formActions: FormikHelpers<{}>;
 
 interface LoginFormValues {
   email: string;
@@ -22,36 +20,28 @@ interface LoginFormValues {
 }
 
 export default function LoginForm() {
+  const dispatch = useAppDispatch();
+  const history = useHistory();
   const initialValues: LoginFormValues = { email: "", password: "" };
-  const dispatch = useDispatch();
-  const currentUser = useSelector((state: RootState) => state.auth.currentUser);
-  const loading = useSelector((state: RootState) => state.auth.loading);
-  const errors = useSelector((state: RootState) => state.auth.error);
 
-  useEffect(() => {
-    if (formActions) {
-      formActions.setSubmitting(loading);
-
-      if (errors) {
-        formActions.setErrors({
-          email: "Check your email",
-          password: "Check your password",
-        });
-      }
-    }
-  }, [loading, errors]);
-
-  const handleSubmit = (
+  const handleSubmit = async (
     values: LoginFormValues,
-    actions: FormikHelpers<{}>
+    formikHelpers: FormikHelpers<LoginFormValues>
   ) => {
-    const { email, password } = values;
-    formActions = actions;
+    formikHelpers.setSubmitting(true);
 
-    dispatch(login(email, password));
+    const resultAction = await dispatch(login(values));
+    if (login.fulfilled.match(resultAction)) return history.replace("/home");
+    else if (resultAction.payload) {
+      formikHelpers.setErrors({
+        email: "Check your email",
+        password: "Check your password",
+      });
+      toast.error(resultAction.payload);
+    }
+
+    formikHelpers.setSubmitting(false);
   };
-
-  if (currentUser) return <Redirect to="/home" />;
 
   return (
     <div>
