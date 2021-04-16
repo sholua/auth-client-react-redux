@@ -26,7 +26,7 @@ export default function LoginForm() {
   const dispatch = useDispatch();
   const currentUser = useSelector((state: RootState) => state.auth.currentUser);
   const loading = useSelector((state: RootState) => state.auth.loading);
-  const errors = useSelector((state: RootState) => state.auth.errors);
+  const errors = useSelector((state: RootState) => state.auth.error);
 
   useEffect(() => {
     if (formActions) {
