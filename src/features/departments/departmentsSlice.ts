@@ -14,11 +14,7 @@ export interface Department {
   name: string;
 }
 
-// TODO: Send this shape of errors from backend
-interface ValidationErrors {
-  errorMessage: string;
-  field_errors: Record<string, string>;
-}
+interface ValidationErrors extends Record<string, string> {}
 
 const departmentsAdapter = createEntityAdapter<Department>({
   selectId: (department) => department._id,
@@ -44,42 +40,50 @@ export const fetchDepartments = createAsyncThunk(
 
       const diffInMinutes = moment().diff(moment(lastFetch), "minutes");
 
-      if (loading || diffInMinutes < 5) {
+      if (loading || diffInMinutes < 2) {
         return false;
       }
     },
   }
 );
 
-export const createDepartment = createAsyncThunk(
-  "departments/createDepartment",
-  async (initialDepartment: Omit<Department, "_id">) => {
-    const response = await backend.post("/departments", initialDepartment);
+export const createDepartment = createAsyncThunk<
+  Department,
+  Omit<Department, "_id">,
+  {
+    rejectValue: ValidationErrors;
+  }
+>("departments/createDepartment", async (department, { rejectWithValue }) => {
+  try {
+    const response = await backend.post("/departments", department);
     return response.data;
+  } catch (err) {
+    if (err.response) return rejectWithValue(err.response.data);
   }
-);
+});
 
-export const updateDepartment = createAsyncThunk(
-  "departments/updateDepartment",
-  async (department: Department, { rejectWithValue }) => {
-    const { _id, ...fields } = department;
-    try {
-      const response = await backend.put(`/departments/${_id}`, fields);
-      return response.data;
-    } catch (err) {
-      let error: AxiosError<ValidationErrors> = err;
-      if (!error.response) {
-        throw err;
-      }
-
-      return rejectWithValue(error.response.data);
+export const updateDepartment = createAsyncThunk<
+  Department,
+  Department,
+  { rejectValue: ValidationErrors }
+>("departments/updateDepartment", async (department, { rejectWithValue }) => {
+  const { _id, ...fields } = department;
+  try {
+    const response = await backend.put(`/departments/${_id}`, fields);
+    return response.data;
+  } catch (err) {
+    let error: AxiosError<ValidationErrors> = err;
+    if (!error.response) {
+      throw err;
     }
-  }
-);
 
-export const deleteDepartment = createAsyncThunk(
+    return rejectWithValue(error.response.data);
+  }
+});
+
+export const deleteDepartment = createAsyncThunk<Department, string>(
   "departments/deleteDepartment",
-  async (departmentId: string) => {
+  async (departmentId) => {
     const response = await backend.delete(`/departments/${departmentId}`);
     return response.data._id;
   }

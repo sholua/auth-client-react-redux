@@ -40,7 +40,7 @@ export const fetchUsers = createAsyncThunk(
 
       const diffInMinutes = moment().diff(moment(lastFetch), "minutes");
 
-      if (loading || diffInMinutes < 5) {
+      if (loading || diffInMinutes < 2) {
         return false;
       }
     },

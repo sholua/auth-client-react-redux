@@ -48,7 +48,7 @@ export default function DepartmentForm() {
       if (createDepartment.fulfilled.match(resultAction)) {
         history.push("/profile/departments");
       } else {
-        formikHelpers.setErrors(resultAction.payload as FormValues);
+        if (resultAction.payload) formikHelpers.setErrors(resultAction.payload);
       }
     }
 
@@ -59,8 +59,7 @@ export default function DepartmentForm() {
       if (updateDepartment.fulfilled.match(resultAction)) {
         history.push("/profile/departments");
       } else {
-        if (resultAction.payload)
-          formikHelpers.setErrors(resultAction.payload as FormValues);
+        if (resultAction.payload) formikHelpers.setErrors(resultAction.payload);
       }
       formikHelpers.setSubmitting(false);
     }
