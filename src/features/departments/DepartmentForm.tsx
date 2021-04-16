@@ -21,15 +21,15 @@ export default function DepartmentForm() {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const { id } = useParams<{ id: string }>();
+  const isEditing = id !== "new";
   const department = useSelector((state: RootState) =>
     selectDepartmentById(state, id)
   );
 
   useEffect(() => {
     // TODO: load department by id
-    if (!department && id !== "new")
-      console.log("Should load department by id");
-  }, [department, id]);
+    if (!department && isEditing) console.log("Should load department by id");
+  }, [department, isEditing]);
 
   interface FormValues extends Omit<Department, "_id"> {}
 
@@ -43,9 +43,16 @@ export default function DepartmentForm() {
   ) => {
     formikHelpers.setSubmitting(true);
 
-    // if (id === "new") dispatch(createDepartment(values));
+    if (!isEditing) {
+      const resultAction = await dispatch(createDepartment(values));
+      if (createDepartment.fulfilled.match(resultAction)) {
+        history.push("/profile/departments");
+      } else {
+        formikHelpers.setErrors(resultAction.payload as FormValues);
+      }
+    }
 
-    if (department && department._id) {
+    if (isEditing && department && department._id) {
       const resultAction = await dispatch(
         updateDepartment({ _id: department._id, ...values })
       );
@@ -61,8 +68,8 @@ export default function DepartmentForm() {
 
   return (
     <div>
-      {id === "new" && <h1>Creating new department</h1>}
-      {id !== "new" && <h1>Update department</h1>}
+      {isEditing && <h1>Creating new department</h1>}
+      {!isEditing && <h1>Update department</h1>}
 
       <AppForm
         initialValues={initialValues}
