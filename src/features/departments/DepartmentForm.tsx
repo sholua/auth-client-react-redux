@@ -9,6 +9,7 @@ import {
   updateDepartment,
   selectDepartmentById,
   Department,
+  fetchDepartmentById,
 } from "./departmentsSlice";
 import { AppForm, AppFormField, SubmitButton } from "../common";
 import { RootState, useAppDispatch } from "../../app/store";
@@ -27,9 +28,8 @@ export default function DepartmentForm() {
   );
 
   useEffect(() => {
-    // TODO: load department by id
-    if (!department && isEditing) console.log("Should load department by id");
-  }, [department, isEditing]);
+    if (!department && isEditing) dispatch(fetchDepartmentById(id));
+  }, [department, isEditing, id, dispatch]);
 
   interface FormValues extends Omit<Department, "_id"> {}
 
@@ -61,14 +61,15 @@ export default function DepartmentForm() {
       } else {
         if (resultAction.payload) formikHelpers.setErrors(resultAction.payload);
       }
-      formikHelpers.setSubmitting(false);
     }
+
+    formikHelpers.setSubmitting(false);
   };
 
   return (
     <div>
-      {isEditing && <h1>Creating new department</h1>}
-      {!isEditing && <h1>Update department</h1>}
+      {!isEditing && <h1>Creating new department</h1>}
+      {isEditing && <h1>Update department</h1>}
 
       <AppForm
         initialValues={initialValues}

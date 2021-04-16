@@ -26,6 +26,21 @@ const initialState = departmentsAdapter.getInitialState({
   lastFetch: null as null | number,
 });
 
+export const createDepartment = createAsyncThunk<
+  Department,
+  Omit<Department, "_id">,
+  {
+    rejectValue: ValidationErrors;
+  }
+>("departments/createDepartment", async (department, { rejectWithValue }) => {
+  try {
+    const response = await backend.post("/departments", department);
+    return response.data;
+  } catch (err) {
+    if (err.response) return rejectWithValue(err.response.data);
+  }
+});
+
 export const fetchDepartments = createAsyncThunk(
   "departments/fetchDepartments",
   async () => {
@@ -47,20 +62,13 @@ export const fetchDepartments = createAsyncThunk(
   }
 );
 
-export const createDepartment = createAsyncThunk<
-  Department,
-  Omit<Department, "_id">,
-  {
-    rejectValue: ValidationErrors;
+export const fetchDepartmentById = createAsyncThunk<Department, string>(
+  "departments/fetchDepartmentById",
+  async (departmentId) => {
+    const response = await backend.get(`/departments/${departmentId}`);
+    return response.data as Department;
   }
->("departments/createDepartment", async (department, { rejectWithValue }) => {
-  try {
-    const response = await backend.post("/departments", department);
-    return response.data;
-  } catch (err) {
-    if (err.response) return rejectWithValue(err.response.data);
-  }
-});
+);
 
 export const updateDepartment = createAsyncThunk<
   Department,
@@ -115,6 +123,8 @@ const departmentsSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
+
+    [fetchDepartmentById.fulfilled.type]: departmentsAdapter.upsertOne,
 
     [createDepartment.fulfilled.type]: departmentsAdapter.addOne,
 

@@ -20,6 +20,7 @@ function AppForm({
       initialValues={initialValues}
       onSubmit={onSubmit}
       validationSchema={validationSchema}
+      enableReinitialize
     >
       {({ handleSubmit }) => <Form onSubmit={handleSubmit}>{children}</Form>}
     </Formik>
