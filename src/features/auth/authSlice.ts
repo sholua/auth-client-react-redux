@@ -110,21 +110,6 @@ export interface AuthRequestFailedAction {
 // Action Creators
 const url = "/auth";
 
-// export const register = (user: { email: string; password: string }) => (
-//   dispatch: Dispatch
-// ) => {
-//   return dispatch(
-//     apiCallBegan({
-//       url: `${url}/register`,
-//       method: "POST",
-//       data: user,
-//       onStart: authRequested.type,
-//       onSuccess: authReceived.type,
-//       onError: authRequestFailed.type,
-//     })
-//   );
-// };
-
 export const login = (email: string, password: string) => (
   dispatch: Dispatch
 ) => {

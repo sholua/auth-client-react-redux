@@ -1,15 +1,14 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Redirect } from "react-router-dom";
 import * as Yup from "yup";
-import { useDispatch, useSelector } from "react-redux";
 import { FormikHelpers } from "formik";
 
 import { register } from "./authSlice";
 import { AppForm, AppFormField, SubmitButton } from "../common";
-import { RootState } from "../../app/store";
+import { useAppDispatch } from "../../app/store";
 
 const validationSchema = Yup.object().shape({
-  firstName: Yup.string().min(4).required().label("First name"),
+  firstName: Yup.string().min(1).required().label("First name"),
   email: Yup.string().email().required().label("Email"),
   password: Yup.string()
     .matches(
@@ -20,8 +19,6 @@ const validationSchema = Yup.object().shape({
     .label("Password"),
 });
 
-let formActions: FormikHelpers<{}>;
-
 interface RegisterFormValues {
   firstName: string;
   email: string;
@@ -29,36 +26,27 @@ interface RegisterFormValues {
 }
 
 export default function RegisterForm() {
+  const dispatch = useAppDispatch();
+
   const initialValues: RegisterFormValues = {
     firstName: "",
     email: "",
     password: "",
   };
-  const dispatch = useDispatch();
-  const currentUser = useSelector((state: RootState) => state.auth.currentUser);
-  const loading = useSelector((state: RootState) => state.auth.loading);
-  const errors = useSelector((state: RootState) => state.auth.error);
 
-  useEffect(() => {
-    if (formActions) {
-      formActions.setSubmitting(loading);
-
-      if (errors) {
-        formActions.setErrors(errors);
-      }
-    }
-  }, [loading, errors]);
-
-  const handleSubmit = (
+  const handleSubmit = async (
     values: RegisterFormValues,
-    actions: FormikHelpers<{}>
+    formikHelpers: FormikHelpers<RegisterFormValues>
   ) => {
-    formActions = actions;
+    formikHelpers.setSubmitting(true);
 
-    dispatch(register(values));
+    const resultAction = await dispatch(register(values));
+    if (register.fulfilled.match(resultAction)) return <Redirect to="/home" />;
+    else if (resultAction.payload)
+      formikHelpers.setErrors(resultAction.payload);
+
+    formikHelpers.setSubmitting(false);
   };
-
-  if (currentUser) return <Redirect to="/home" />;
 
   return (
     <div>
