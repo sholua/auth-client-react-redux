@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { apiCallBegan } from "../../store/apiActions";
 import { Dispatch } from "redux";
+
 import { User } from "../users/usersSlice";
 import { RootState } from "../../app/store";
 import { backend } from "../../apis/backend";
@@ -75,6 +75,10 @@ export const getCurrentUser = createAsyncThunk(
   }
 );
 
+export const avatarUploaded = (user: User) => (dispatch: Dispatch) => {
+  return dispatch({ type: currentUserReceived.type, payload: user });
+};
+
 export interface AuthSlice {
   currentUser: unknown;
   loading: boolean;
@@ -89,24 +93,9 @@ const authSlice = createSlice({
     error: "",
   } as AuthSlice,
   reducers: {
-    authRequested: (auth, action) => {
-      auth.loading = true;
-      auth.error = "";
-    },
-
-    authReceived: (auth, action) => {
+    currentUserReceived: (auth, action) => {
       auth.currentUser = action.payload;
       auth.loading = false;
-    },
-
-    authLogout: (auth, action) => {
-      auth.currentUser = null;
-      auth.loading = false;
-    },
-
-    authRequestFailed: (auth, action) => {
-      auth.loading = false;
-      auth.error = action.payload;
     },
   },
   extraReducers: {
@@ -170,38 +159,8 @@ const authSlice = createSlice({
   },
 });
 
-export const {
-  authRequested,
-  authReceived,
-  authLogout,
-  authRequestFailed,
-} = authSlice.actions;
+export const { currentUserReceived } = authSlice.actions;
 
 export default authSlice.reducer;
-
-// Action Interfaces
-export interface AuthRequestedAction {
-  type: typeof authRequested.type;
-}
-
-export interface AuthReceivedAction {
-  type: typeof authReceived.type;
-  payload: User[];
-}
-
-export interface AuthLogoutAction {
-  type: typeof authLogout.type;
-}
-
-export interface AuthRequestFailedAction {
-  type: typeof authRequestFailed.type;
-  payload: { [key: string]: string } | string;
-}
-
-export const avatarUploaded = (user: User) => (dispatch: Dispatch) => {
-  return dispatch({ type: authReceived.type, payload: user });
-};
-
-// Selectors
 
 export const selectCurrentUser = (state: RootState) => state.auth.currentUser;
