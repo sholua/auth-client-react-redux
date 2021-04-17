@@ -1,10 +1,14 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 import { apiCallBegan } from "../../store/apiActions";
 import { Dispatch } from "redux";
 import { User } from "../users/usersSlice";
 import { RootState } from "../../app/store";
 import { backend } from "../../apis/backend";
-import { loginWithJwt } from "../../services/authService";
+import {
+  loginWithJwt,
+  logout as localStorageLogout,
+} from "../../services/authService";
 
 interface UserForRegister {
   firstName: string;
@@ -51,6 +55,18 @@ export const login = createAsyncThunk<
   }
 });
 
+export const logout = createAsyncThunk(
+  "auth/logout",
+  async (refreshToken: string) => {
+    const response = await backend.delete("/auth/logout", {
+      data: { refreshToken },
+    });
+    localStorageLogout();
+    toast.success(response.data);
+    return response.data;
+  }
+);
+
 export interface AuthSlice {
   currentUser: unknown;
   loading: boolean;
@@ -86,7 +102,7 @@ const authSlice = createSlice({
     },
   },
   extraReducers: {
-    [register.pending.type]: (state, { payload }) => {
+    [register.pending.type]: (state, action) => {
       state.loading = true;
       state.error = "";
     },
@@ -99,7 +115,7 @@ const authSlice = createSlice({
       state.error = payload;
     },
 
-    [login.pending.type]: (state, { payload }) => {
+    [login.pending.type]: (state, action) => {
       state.loading = true;
       state.error = "";
     },
@@ -108,6 +124,19 @@ const authSlice = createSlice({
       state.currentUser = payload;
     },
     [login.rejected.type]: (state, { payload }: PayloadAction<string>) => {
+      state.loading = false;
+      state.error = payload;
+    },
+
+    [logout.pending.type]: (state, action) => {
+      state.loading = true;
+      state.error = "";
+    },
+    [logout.fulfilled.type]: (state, action) => {
+      state.loading = false;
+      state.currentUser = null;
+    },
+    [logout.rejected.type]: (state, { payload }: PayloadAction<string>) => {
       state.loading = false;
       state.error = payload;
     },
@@ -145,40 +174,12 @@ export interface AuthRequestFailedAction {
 // Action Creators
 const url = "/auth";
 
-// export const login = (email: string, password: string) => (
-//   dispatch: Dispatch
-// ) => {
-//   return dispatch(
-//     apiCallBegan({
-//       url: `${url}/login`,
-//       method: "POST",
-//       data: { email, password },
-//       onStart: authRequested.type,
-//       onSuccess: authReceived.type,
-//       onError: authRequestFailed.type,
-//     })
-//   );
-// };
-
 export const getCurrentUser = () => (dispatch: Dispatch) => {
   return dispatch(
     apiCallBegan({
       url: `${url}/me`,
       onStart: authRequested.type,
       onSuccess: authReceived.type,
-      onError: authRequestFailed.type,
-    })
-  );
-};
-
-export const logout = (refreshToken: string | null) => (dispatch: Dispatch) => {
-  return dispatch(
-    apiCallBegan({
-      url: `${url}/logout`,
-      method: "DELETE",
-      data: { params: { refreshToken } },
-      onStart: authRequested.type,
-      onSuccess: authLogout.type,
       onError: authRequestFailed.type,
     })
   );

@@ -8,7 +8,8 @@ const Logout = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(logout(getRefreshToken()));
+    const refreshToken = getRefreshToken();
+    if (refreshToken) dispatch(logout(refreshToken));
   }, [dispatch]);
 
   return <Redirect to="/home" />;
