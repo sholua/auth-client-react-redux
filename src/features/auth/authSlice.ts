@@ -67,6 +67,14 @@ export const logout = createAsyncThunk(
   }
 );
 
+export const getCurrentUser = createAsyncThunk(
+  "auth/getCurrentUser",
+  async () => {
+    const response = await backend.get("/auth/me");
+    return response.data;
+  }
+);
+
 export interface AuthSlice {
   currentUser: unknown;
   loading: boolean;
@@ -140,6 +148,25 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = payload;
     },
+
+    [getCurrentUser.pending.type]: (state, action) => {
+      state.loading = true;
+      state.error = "";
+    },
+    [getCurrentUser.fulfilled.type]: (
+      state,
+      { payload }: PayloadAction<User>
+    ) => {
+      state.loading = false;
+      state.currentUser = payload;
+    },
+    [getCurrentUser.rejected.type]: (
+      state,
+      { payload }: PayloadAction<string>
+    ) => {
+      state.loading = false;
+      state.error = payload;
+    },
   },
 });
 
@@ -170,20 +197,6 @@ export interface AuthRequestFailedAction {
   type: typeof authRequestFailed.type;
   payload: { [key: string]: string } | string;
 }
-
-// Action Creators
-const url = "/auth";
-
-export const getCurrentUser = () => (dispatch: Dispatch) => {
-  return dispatch(
-    apiCallBegan({
-      url: `${url}/me`,
-      onStart: authRequested.type,
-      onSuccess: authReceived.type,
-      onError: authRequestFailed.type,
-    })
-  );
-};
 
 export const avatarUploaded = (user: User) => (dispatch: Dispatch) => {
   return dispatch({ type: authReceived.type, payload: user });
