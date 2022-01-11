@@ -14,7 +14,8 @@ const UsersList = () => {
     <ul data-testid="users">
       {users.map((user) => (
         <li key={user._id}>
-          {user.firstName} - <span>{user.email}</span>
+          {user.firstName} - <span>{user.email}</span> -{" "}
+          <span>Role: {user.role}</span>
         </li>
       ))}
     </ul>
