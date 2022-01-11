@@ -8,6 +8,7 @@ import {
 } from "./departmentsSlice";
 import { Link, useRouteMatch } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
+import { isAdmin } from "../../services/authService";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
 export default function Departments() {
@@ -44,22 +45,29 @@ export default function Departments() {
 
   return (
     <div>
-      <Link to={`${url}/new`}>
-        <Button size="sm">Create new department</Button>
-      </Link>
+      {isAdmin() && (
+        <Link to={`${url}/new`}>
+          <Button size="sm">Create new department</Button>
+        </Link>
+      )}
       <ul data-testid="departments">
         {departments.map((department) => (
           <li key={department._id}>
-            {department.name} <Link to={`${url}/${department._id}`}>Edit</Link>{" "}
-            /{" "}
-            {department._id && (
-              <Button
-                variant="danger"
-                size="sm"
-                onClick={handleDelete(department._id)}
-              >
-                Delete
-              </Button>
+            {department.name}
+            {isAdmin() && (
+              <span>
+                <Link to={`${url}/${department._id}`}>Edit</Link>
+                {" / "}
+                {department._id && (
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    onClick={handleDelete(department._id)}
+                  >
+                    Delete
+                  </Button>
+                )}
+              </span>
             )}
           </li>
         ))}
