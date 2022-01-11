@@ -2,9 +2,7 @@ import React, { FC, ReactElement } from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { render } from "@testing-library/react";
-import configureStore from "../store/configureStore";
-
-const store = configureStore();
+import store from "../app/store";
 
 const AllTheProviders: FC = ({ children }) => {
   return (
